@@ -1,0 +1,9 @@
+{
+"name": "Rutina Esteban",
+"short_name": "Rutina",
+"start_url": "index.html",
+"display": "standalone",
+"background_color": "#0f1c2b",
+"theme_color": "#173554",
+"orientation": "portrait"
+}
