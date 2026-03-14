@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Rutina">
+<title>Rutina · Esteban</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f8fb;
+    --surface: #ffffff;
+    --surface2: #edf3f8;
+    --blue-deep: #173554;
+    --blue-mid: #2563a8;
+    --blue-light: #3bafd4;
+    --blue-pale: #e8f4fc;
+    --blue-pale2: #cce4f5;
+    --text: #182630;
+    --text-mid: #4a6275;
+    --text-muted: #90a8bc;
+    --border: #d6e6f0;
+    --border-light: #eaf3fb;
+    --danger: #c0392b;
+    --danger-bg: #fdf0ee;
+    --danger-border: #f5c6c2;
+    --warn: #c07000;
+    --warn-bg: #fdf8ec;
+    --warn-border: #f5dfa0;
+    --ok: #0a7055;
+    --ok-bg: #edfaf5;
+    --ok-border: #9de8cc;
+    --radius: 14px;
+    --radius-sm: 9px;
+    --shadow: 0 1px 3px rgba(23,53,84,0.07), 0 1px 2px rgba(23,53,84,0.04);
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+font-weight: 400;
+min-height: 100vh;
+line-height: 1.6;
+font-size: 15px;
+}
+
+header {
+background: var(–surface);
+border-bottom: 1px solid var(–border);
+padding: 20px 24px 16px;
+position: sticky;
+top: 0;
+z-index: 100;
+box-shadow: var(–shadow);
+}
+.header-inner {
+max-width: 680px;
+margin: 0 auto;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+}
+.header-title {
+font-family: ‘Outfit’, sans-serif;
+font-size: 19px;
+font-weight: 700;
+color: var(–blue-deep);
+letter-spacing: -0.4px;
+}
+.header-sub {
+font-size: 12px;
+color: var(–text-muted);
+margin-top: 2px;
+}
+.phase-pill {
+font-family: ‘Outfit’, sans-serif;
+font-size: 11px;
+font-weight: 600;
+padding: 7px 13px;
+border-radius: 40px;
+background: var(–blue-pale);
+color: var(–blue-mid);
+border: 1.5px solid var(–blue-pale2);
+cursor: pointer;
+white-space: nowrap;
+transition: background 0.2s;
+flex-shrink: 0;
+}
+.phase-pill:hover { background: var(–blue-pale2); }
+
+.nav-wrap {
+background: var(–surface);
+border-bottom: 1px solid var(–border);
+position: sticky;
+top: 71px;
+z-index: 99;
+}
+.main-tabs {
+max-width: 680px;
+margin: 0 auto;
+display: flex;
+overflow-x: auto;
+scrollbar-width: none;
+padding: 0 20px;
+}
+.main-tabs::-webkit-scrollbar { display: none; }
+.main-tab {
+font-family: ‘Outfit’, sans-serif;
+font-size: 13px;
+font-weight: 500;
+padding: 13px 16px;
+cursor: pointer;
+color: var(–text-muted);
+border: none;
+border-bottom: 2.5px solid transparent;
+background: none;
+outline: none;
+white-space: nowrap;
+transition: all 0.2s;
+}
+.main-tab:hover { color: var(–blue-mid); }
+.main-tab.active {
+color: var(–blue-deep);
+border-bottom-color: var(–blue-light);
+font-weight: 700;
+}
+
+.content {
+max-width: 680px;
+margin: 0 auto;
+padding: 22px 20px 56px;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+
+.section-label {
+font-family: ‘Outfit’, sans-serif;
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 1.8px;
+text-transform: uppercase;
+color: var(–blue-light);
+margin-bottom: 14px;
+margin-top: 26px;
+}
+.section-label:first-child { margin-top: 0; }
+
+.progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.prog-label { font-size: 12px; color: var(–text-muted); font-family: ‘Outfit’, sans-serif; min-width: 40px; }
+.prog-wrap { flex: 1; height: 4px; background: var(–border); border-radius: 4px; overflow: hidden; }
+.prog-bar { height: 100%; background: linear-gradient(90deg, var(–blue-mid), var(–blue-light)); border-radius: 4px; transition: width 0.4s cubic-bezier(.4,0,.2,1); width: 0%; }
+.prog-pct { font-size: 12px; color: var(–blue-mid); font-family: ‘Outfit’, sans-serif; font-weight: 700; min-width: 34px; text-align: right; }
+
+.reset-row { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+.reset-btn {
+font-size: 11px;
+color: var(–text-muted);
+background: none;
+border: 1px solid var(–border);
+border-radius: 6px;
+padding: 5px 12px;
+cursor: pointer;
+font-family: ‘Outfit’, sans-serif;
+font-weight: 600;
+letter-spacing: 0.3px;
+transition: all 0.2s;
+}
+.reset-btn:hover { color: var(–blue-mid); border-color: var(–blue-pale2); }
+
+.steps { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+
+.step {
+display: flex;
+align-items: flex-start;
+gap: 13px;
+padding: 15px 16px;
+background: var(–surface);
+border: 1.5px solid var(–border);
+border-radius: var(–radius);
+cursor: pointer;
+transition: border-color 0.2s, background 0.15s;
+box-shadow: var(–shadow);
+user-select: none;
+}
+.step:active { transform: scale(0.99); }
+.step:hover { border-color: var(–blue-pale2); }
+.step.checked { background: var(–blue-pale); border-color: var(–blue-light); }
+.step.checked .step-name { text-decoration: line-through; color: var(–text-muted); }
+
+.step-num {
+font-family: ‘Outfit’, sans-serif;
+font-size: 11px;
+font-weight: 700;
+color: var(–blue-light);
+min-width: 20px;
+padding-top: 2px;
+user-select: none;
+}
+.step-body { flex: 1; min-width: 0; }
+.step-name {
+font-family: ‘Outfit’, sans-serif;
+font-size: 15px;
+font-weight: 600;
+color: var(–blue-deep);
+margin-bottom: 3px;
+transition: color 0.2s;
+line-height: 1.3;
+}
+.step-detail { font-size: 13px; color: var(–text-mid); line-height: 1.55; }
+.product-tag {
+display: inline-block;
+font-size: 11px;
+padding: 3px 9px;
+border-radius: 4px;
+background: var(–surface2);
+border: 1px solid var(–border);
+color: var(–blue-mid);
+margin-top: 7px;
+font-family: ‘Outfit’, sans-serif;
+font-weight: 600;
+}
+
+.check-box {
+width: 20px;
+height: 20px;
+border: 2px solid var(–border);
+border-radius: 6px;
+flex-shrink: 0;
+margin-top: 2px;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: all 0.2s;
+background: var(–surface);
+}
+.step.checked .check-box { background: var(–blue-light); border-color: var(–blue-light); }
+.step.checked .check-box::after {
+content: ‘’;
+width: 5px;
+height: 9px;
+border: 2px solid white;
+border-top: none;
+border-left: none;
+transform: rotate(45deg) translateY(-1px);
+}
+
+.step-static {
+display: flex;
+align-items: flex-start;
+gap: 13px;
+padding: 15px 16px;
+background: var(–surface);
+border: 1.5px solid var(–border);
+border-radius: var(–radius);
+box-shadow: var(–shadow);
+margin-bottom: 8px;
+}
+.step-static .step-num { color: var(–blue-mid); }
+
+.alert {
+padding: 13px 15px;
+border-radius: var(–radius-sm);
+margin-bottom: 13px;
+font-size: 13px;
+line-height: 1.6;
+border-left: 3px solid;
+}
+.alert-label {
+font-family: ‘Outfit’, sans-serif;
+font-size: 10px;
+font-weight: 800;
+letter-spacing: 1.2px;
+text-transform: uppercase;
+display: block;
+margin-bottom: 5px;
+}
+.alert-danger { background: var(–danger-bg); border-color: var(–danger); color: #6b1812; }
+.alert-danger .alert-label { color: var(–danger); }
+.alert-warn { background: var(–warn-bg); border-color: var(–warn); color: #6b4000; }
+.alert-warn .alert-label { color: var(–warn); }
+.alert-ok { background: var(–ok-bg); border-color: var(–ok); color: #064d3a; }
+.alert-ok .alert-label { color: var(–ok); }
+.alert-info { background: var(–blue-pale); border-color: var(–blue-light); color: var(–blue-deep); }
+.alert-info .alert-label { color: var(–blue-mid); }
+
+.sub-tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+.sub-tab {
+font-family: ‘Outfit’, sans-serif;
+font-size: 12px;
+font-weight: 500;
+padding: 8px 14px;
+border-radius: 40px;
+border: 1.5px solid var(–border);
+color: var(–text-muted);
+cursor: pointer;
+background: var(–surface);
+transition: all 0.2s;
+outline: none;
+}
+.sub-tab:hover { color: var(–blue-mid); border-color: var(–blue-pale2); }
+.sub-tab.active { background: var(–blue-pale); border-color: var(–blue-light); color: var(–blue-deep); font-weight: 700; }
+.sub-panel { display: none; }
+.sub-panel.active { display: block; animation: fadeIn 0.2s ease; }
+
+.divider { height: 1px; background: var(–border); margin: 22px 0; }
+
+.razor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+.razor-card {
+background: var(–surface);
+border: 1.5px solid var(–border);
+border-radius: var(–radius);
+padding: 14px 10px;
+text-align: center;
+box-shadow: var(–shadow);
+}
+.razor-card.warn-card { border-color: var(–danger-border); background: var(–danger-bg); }
+.razor-card.ok-card { border-color: var(–ok-border); background: var(–ok-bg); }
+.rc-label { font-family:‘Outfit’,sans-serif; font-size:10px; font-weight:700; color:var(–text-muted); text-transform:uppercase; letter-spacing:.8px; margin-bottom:6px; }
+.rc-val { font-family:‘Outfit’,sans-serif; font-size:26px; font-weight:800; line-height:1; margin-bottom:4px; }
+.warn-card .rc-val { color: var(–danger); }
+.ok-card .rc-val { color: var(–ok); }
+.rc-val-default { color: var(–blue-deep); }
+.rc-sub { font-size: 11px; color: var(–text-muted); }
+
+.day-selector { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 14px; }
+.day-btn {
+font-family:‘Outfit’,sans-serif;
+font-size: 12px;
+font-weight: 600;
+width: 42px;
+height: 42px;
+border-radius: 50%;
+border: 1.5px solid var(–border);
+color: var(–text-muted);
+background: var(–surface);
+cursor: pointer;
+transition: all 0.2s;
+outline: none;
+display: flex;
+align-items: center;
+justify-content: center;
+box-shadow: var(–shadow);
+}
+.day-btn:hover { border-color: var(–blue-pale2); color: var(–blue-mid); }
+.day-btn.selected { background: var(–blue-mid); border-color: var(–blue-mid); color: white; }
+
+.tracker { background: var(–surface); border: 1.5px solid var(–border); border-radius: var(–radius); padding: 18px; margin-bottom: 18px; box-shadow: var(–shadow); }
+.tracker-title { font-family:‘Outfit’,sans-serif; font-size:16px; font-weight:700; color:var(–blue-deep); margin-bottom:3px; }
+.tracker-sub { font-size:13px; color:var(–text-muted); margin-bottom:16px; }
+
+.tracker-phases { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-bottom: 14px; }
+.tracker-phase {
+padding: 10px 6px;
+text-align: center;
+font-family: ‘Outfit’,sans-serif;
+font-size: 10px;
+font-weight: 600;
+color: var(–text-muted);
+background: var(–bg);
+border: 1.5px solid var(–border);
+border-radius: var(–radius-sm);
+cursor: pointer;
+transition: all 0.2s;
+line-height: 1.4;
+}
+.tracker-phase:hover { border-color: var(–blue-pale2); color: var(–blue-mid); }
+.tracker-phase.current { background: var(–blue-pale); border-color: var(–blue-light); color: var(–blue-deep); font-weight: 800; }
+.phase-num { font-size:20px; font-weight:800; display:block; margin-bottom:3px; color:inherit; }
+
+.phase-desc { font-size:13px; color:var(–text-mid); line-height:1.65; padding:13px 15px; background:var(–blue-pale); border-radius:var(–radius-sm); border:1px solid var(–blue-pale2); }
+
+.permit-table { width:100%; border-collapse:collapse; font-size:13px; background:var(–surface); border-radius:var(–radius); overflow:hidden; box-shadow:var(–shadow); border:1.5px solid var(–border); }
+.permit-table thead tr { background:var(–surface2); border-bottom:1px solid var(–border); }
+.permit-table th { text-align:left; padding:10px 14px; font-family:‘Outfit’,sans-serif; font-size:10px; font-weight:700; color:var(–text-muted); letter-spacing:.8px; text-transform:uppercase; }
+.permit-table th:not(:first-child) { text-align:center; }
+.permit-table td { padding:10px 14px; border-bottom:1px solid var(–border-light); color:var(–text-mid); }
+.permit-table tr:last-child td { border-bottom:none; }
+.permit-table td:not(:first-child) { text-align:center; font-size:15px; }
+.ok-cell { color:var(–ok); font-weight:700; }
+.no-cell { color:var(–danger); font-weight:700; }
+.half-cell { color:var(–warn); font-size:12px; font-weight:700; }
+
+@media (max-width: 480px) {
+.tracker-phases { grid-template-columns: repeat(2,1fr); }
+.razor-grid { grid-template-columns: repeat(2,1fr); }
+.razor-grid .razor-card:last-child { grid-column: span 2; }
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="header-title">Rutina Personal</div>
+      <div class="header-sub">Esteban · Bogotá · Mar 2026</div>
+    </div>
+    <div class="phase-pill" onclick="switchTab('transicion')">↗ Transición activa</div>
+  </div>
+</header>
+
+<div class="nav-wrap">
+  <div class="main-tabs">
+    <button class="main-tab active" onclick="switchTab('manana')" id="tab-manana">☀ Mañana</button>
+    <button class="main-tab" onclick="switchTab('noche')" id="tab-noche">◑ Noche</button>
+    <button class="main-tab" onclick="switchTab('afeitado')" id="tab-afeitado">✦ Afeitado</button>
+    <button class="main-tab" onclick="switchTab('transicion')" id="tab-transicion">↗ Transición</button>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- MAÑANA -->
+
+  <div class="tab-panel active" id="panel-manana">
+    <div class="section-label">Rutina matutina — Diaria sin excepciones</div>
+    <div class="progress-row">
+      <span class="prog-label" id="prog-m-txt">0 / 4</span>
+      <div class="prog-wrap"><div class="prog-bar" id="prog-m-bar"></div></div>
+      <span class="prog-pct" id="prog-m-pct">0%</span>
+    </div>
+    <div class="reset-row"><button class="reset-btn" onclick="resetGroup('m')">Reiniciar</button></div>
+    <div class="steps" id="steps-m">
+      <div class="step" onclick="toggleStep(this,'m')" data-group="m">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <div class="step-name">Limpieza facial en ducha</div>
+          <div class="step-detail">Piel húmeda. Masajea 30-60 seg con movimientos circulares suaves. Enjuaga con agua tibia, nunca caliente.</div>
+          <span class="product-tag">Eucerin Dermopure Oil Control · 400ml</span>
+        </div>
+        <div class="check-box"></div>
+      </div>
+      <div class="step" onclick="toggleStep(this,'m')" data-group="m">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <div class="step-name">Secar con toque suave</div>
+          <div class="step-detail">Toquecitos con toalla. No frotar. Piel ligeramente húmeda para el siguiente paso.</div>
+        </div>
+        <div class="check-box"></div>
+      </div>
+      <div class="step" onclick="toggleStep(this,'m')" data-group="m">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <div class="step-name">Hidratante</div>
+          <div class="step-detail">Capa fina sobre toda la cara. Espera 2 min antes del protector.</div>
+          <span class="product-tag">Hydraskin · Pharmaderm</span>
+        </div>
+        <div class="check-box"></div>
+      </div>
+      <div class="step" onclick="toggleStep(this,'m')" data-group="m">
+        <div class="step-num">04</div>
+        <div class="step-body">
+          <div class="step-name">Protector solar — no negociable</div>
+          <div class="step-detail">Último paso siempre. UV extremo en Bogotá (índice 10-13). Reaplicar si estás más de 2h en exterior directo.</div>
+          <span class="product-tag">Cetaphil Sun SPF 50+ · piel mixta-grasa</span>
+        </div>
+        <div class="check-box"></div>
+      </div>
+    </div>
+    <div class="alert alert-info">
+      <span class="alert-label">Comedones · Opcional</span>
+      Avene Comedomed puntual sobre lesiones, después del hidratante y antes del SPF. Máx 2-3 veces/semana. No en toda la cara.
+    </div>
+  </div>
+
+  <!-- NOCHE -->
+
+  <div class="tab-panel" id="panel-noche">
+    <div class="section-label">Selecciona tu escenario de esta noche</div>
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="switchSub('n','s1')" id="subtab-n-s1">Descanso</button>
+      <button class="sub-tab" onclick="switchSub('n','s2')" id="subtab-n-s2">Con tratamiento</button>
+      <button class="sub-tab" onclick="switchSub('n','s3')" id="subtab-n-s3">Noche de afeitado</button>
+    </div>
+
+```
+<div class="sub-panel active" id="subpanel-n-s1">
+  <div class="alert alert-ok" style="margin-bottom:14px;">
+    <span class="alert-label">✓ Noche de descanso</span>
+    Solo limpieza e hidratación. La barrera cutánea se recupera.
+  </div>
+  <div class="progress-row">
+    <span class="prog-label" id="prog-s1-txt">0 / 3</span>
+    <div class="prog-wrap"><div class="prog-bar" id="prog-s1-bar"></div></div>
+    <span class="prog-pct" id="prog-s1-pct">0%</span>
+  </div>
+  <div class="reset-row"><button class="reset-btn" onclick="resetGroup('s1')">Reiniciar</button></div>
+  <div class="steps" id="steps-s1">
+    <div class="step" onclick="toggleStep(this,'s1')" data-group="s1">
+      <div class="step-num">01</div>
+      <div class="step-body"><div class="step-name">Ducha + limpieza facial</div><div class="step-detail">Eucerin en ducha. Agua tibia. Enjuague completo.</div><span class="product-tag">Eucerin Dermopure Oil Control</span></div>
+      <div class="check-box"></div>
+    </div>
+    <div class="step" onclick="toggleStep(this,'s1')" data-group="s1">
+      <div class="step-num">02</div>
+      <div class="step-body"><div class="step-name">Secar con toque suave</div><div class="step-detail">Toquecitos, sin fricción.</div></div>
+      <div class="check-box"></div>
+    </div>
+    <div class="step" onclick="toggleStep(this,'s1')" data-group="s1">
+      <div class="step-num">03</div>
+      <div class="step-body"><div class="step-name">Hidratante</div><div class="step-detail">Hydraskin en capa ligera. Fin.</div><span class="product-tag">Hydraskin · Pharmaderm</span></div>
+      <div class="check-box"></div>
+    </div>
+  </div>
+  <div class="alert alert-ok"><span class="alert-label">Opcional</span>Pimple patches sobre lesiones activas como último paso. Pambu My Pimple Hero.</div>
+</div>
+
+<div class="sub-panel" id="subpanel-n-s2">
+  <div class="alert alert-warn" style="margin-bottom:14px;">
+    <span class="alert-label">⚠ Transición activa</span>
+    Zudenina suspendida. Consulta la pestaña Transición para saber qué activo aplica hoy.
+  </div>
+  <div class="progress-row">
+    <span class="prog-label" id="prog-s2-txt">0 / 4</span>
+    <div class="prog-wrap"><div class="prog-bar" id="prog-s2-bar"></div></div>
+    <span class="prog-pct" id="prog-s2-pct">0%</span>
+  </div>
+  <div class="reset-row"><button class="reset-btn" onclick="resetGroup('s2')">Reiniciar</button></div>
+  <div class="steps" id="steps-s2">
+    <div class="step" onclick="toggleStep(this,'s2')" data-group="s2">
+      <div class="step-num">01</div>
+      <div class="step-body"><div class="step-name">Ducha + limpieza facial</div><div class="step-detail">Eucerin. Secar completamente antes del activo.</div><span class="product-tag">Eucerin Dermopure Oil Control</span></div>
+      <div class="check-box"></div>
+    </div>
+    <div class="step" onclick="toggleStep(this,'s2')" data-group="s2">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <div class="step-name">Activo nocturno según fase</div>
+        <div class="step-detail"><strong>Sem. 1-2:</strong> Nada. Solo limpieza + hidratante.<br><strong>Sem. 3+:</strong> Benzac AC con hisopo puntual sobre cada lesión individual.</div>
+      </div>
+      <div class="check-box"></div>
+    </div>
+    <div class="step" onclick="toggleStep(this,'s2')" data-group="s2">
+      <div class="step-num">03</div>
+      <div class="step-body"><div class="step-name">Esperar 10 min</div><div class="step-detail">Si usaste Benzac AC, dejar absorber antes del hidratante.</div></div>
+      <div class="check-box"></div>
+    </div>
+    <div class="step" onclick="toggleStep(this,'s2')" data-group="s2">
+      <div class="step-num">04</div>
+      <div class="step-body"><div class="step-name">Hidratante generoso</div><div class="step-detail">Capa más abundante cuando hay activos.</div><span class="product-tag">Hydraskin · Pharmaderm</span></div>
+      <div class="check-box"></div>
+    </div>
+  </div>
+  <div class="alert alert-danger"><span class="alert-label">🚫 No combinar</span>Benzac AC + Avene Comedomed. Ni Benzac + ácido salicílico. Un activo por noche.</div>
+</div>
+
+<div class="sub-panel" id="subpanel-n-s3">
+  <div class="alert alert-ok" style="margin-bottom:14px;">
+    <span class="alert-label">✓ Noche de afeitado</span>
+    Sin activos agresivos. Solo hidratante al final.
+  </div>
+  <div class="progress-row">
+    <span class="prog-label" id="prog-s3-txt">0 / 6</span>
+    <div class="prog-wrap"><div class="prog-bar" id="prog-s3-bar"></div></div>
+    <span class="prog-pct" id="prog-s3-pct">0%</span>
+  </div>
+  <div class="reset-row"><button class="reset-btn" onclick="resetGroup('s3')">Reiniciar</button></div>
+  <div class="steps" id="steps-s3">
+    <div class="step" onclick="toggleStep(this,'s3')" data-group="s3">
+      <div class="step-num">01</div>
+      <div class="step-body"><div class="step-name">Azelac Loción — 1-2h antes</div><div class="step-detail">Aplicar sobre la zona a afeitar <strong>antes de salir al gym</strong>. Durante el entrenamiento (~1-2h) actúa en la piel. Se lava en la ducha post-gym y el efecto protector permanece.</div><span class="product-tag">Azelac Loción · Sesderma</span></div>
+      <div class="check-box"></div>
+    </div>
+    <div class="step" onclick="toggleStep(this,'s3')" data-group="s3">
+      <div class="step-num">02</div>
+      <div class="step-body"><div class="step-name">Ducha + limpieza facial</div><div class="step-detail">El vapor ablanda el vello. Afeitar justo al salir.</div><span class="product-tag">Eucerin Dermopure Oil Control</span></div>
+      <div class="check-box"></div>
+    </div>
+    <div class="step" onclick="toggleStep(this,'s3')" data-group="s3">
+      <div class="step-num">03</div>
+      <div class="step-body"><div class="step-name">Gel + 30 seg de reposo</div><div class="step-detail">Sin reposo el gel no lubrica y las cortadas aumentan.</div><span class="product-tag">Gillette Fusion ProGlide · gel</span></div>
+      <div class="check-box"></div>
+    </div>
+    <div class="step" onclick="toggleStep(this,'s3')" data-group="s3">
+      <div class="step-num">04</div>
+      <div class="step-body"><div class="step-name">Afeitado — una dirección</div><div class="step-detail">A favor del crecimiento siempre. Safety razor: <strong>nivel 1-2</strong>. Presión mínima. Cortadas: ver protocolo R5 abajo.</div></div>
+      <div class="check-box"></div>
+    </div>
+    <div class="step" onclick="toggleStep(this,'s3')" data-group="s3">
+      <div class="step-num">05</div>
+      <div class="step-body"><div class="step-name">Enjuague con agua fría</div><div class="step-detail">Cierra poros. Espera 2-3 min antes de aplicar algo.</div></div>
+      <div class="check-box"></div>
+    </div>
+    <div class="step" onclick="toggleStep(this,'s3')" data-group="s3">
+      <div class="step-num">06</div>
+      <div class="step-body"><div class="step-name">Hidratante abundante</div><div class="step-detail">Capa generosa. Sin activos adicionales esta noche.</div><span class="product-tag">Hydraskin · Pharmaderm</span></div>
+      <div class="check-box"></div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- AFEITADO -->
+
+  <div class="tab-panel" id="panel-afeitado">
+    <div class="section-label">Safety Razor</div>
+    <div class="razor-grid">
+      <div class="razor-card warn-card">
+        <div class="rc-label">Nivel actual</div>
+        <div class="rc-val">6</div>
+        <div class="rc-sub">⚠ Demasiado agresivo</div>
+      </div>
+      <div class="razor-card ok-card">
+        <div class="rc-label">Nivel objetivo</div>
+        <div class="rc-val">1–2</div>
+        <div class="rc-sub">✓ Para tu piel</div>
+      </div>
+      <div class="razor-card">
+        <div class="rc-label">Frecuencia</div>
+        <div class="rc-val rc-val-default">2–3</div>
+        <div class="rc-sub">veces / semana</div>
+      </div>
+    </div>
+    <div class="alert alert-warn">
+      <span class="alert-label">⚠ Por qué bajar el nivel</span>
+      Nivel 6 = máxima exposición de hoja = mayor riesgo de cortes y razor bumps. Empieza en nivel 1 y sube de uno en uno según tolerancia.
+    </div>
+
+```
+<div class="divider"></div>
+<div class="section-label">Días de afeitado</div>
+<p style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">Toca para marcar o desmarcar. Días alternos recomendados.</p>
+<div class="day-selector">
+  <button class="day-btn selected" onclick="toggleDay(this)">Lun</button>
+  <button class="day-btn" onclick="toggleDay(this)">Mar</button>
+  <button class="day-btn selected" onclick="toggleDay(this)">Mié</button>
+  <button class="day-btn" onclick="toggleDay(this)">Jue</button>
+  <button class="day-btn selected" onclick="toggleDay(this)">Vie</button>
+  <button class="day-btn" onclick="toggleDay(this)">Sáb</button>
+  <button class="day-btn" onclick="toggleDay(this)">Dom</button>
+</div>
+
+<div class="divider"></div>
+<div class="section-label">Reglas de oro</div>
+<div class="step-static"><div class="step-num">R1</div><div class="step-body"><div class="step-name">Azelac antes de salir al gym</div><div class="step-detail">No justo antes, no después.</div></div></div>
+<div class="step-static"><div class="step-num">R2</div><div class="step-body"><div class="step-name">Una sola dirección</div><div class="step-detail">A favor del crecimiento. Sin excepción. Ya lo haces bien.</div></div></div>
+<div class="step-static"><div class="step-num">R3</div><div class="step-body"><div class="step-name">Gel + 30 seg de reposo</div><div class="step-detail">Sin reposo, las cortadas se multiplican.</div></div></div>
+<div class="step-static"><div class="step-num">R4</div><div class="step-body"><div class="step-name">Sin activos la noche del afeitado</div><div class="step-detail">Solo hidratante. Siempre.</div></div></div>
+<div class="step-static"><div class="step-num">R5</div><div class="step-body"><div class="step-name">Cortadas — bloque de alumbre (método óptimo)</div><div class="step-detail">El bloque de alumbre actúa como hemostático y antiséptico al mismo tiempo: detiene el sangrado en 10-20 segundos y cierra el poro. Moja el bloque con agua fría y pásalo suavemente sobre la cortada 2-3 veces. Superior al papel higiénico porque no deja fibras, no requiere presión prolongada y previene infección. Disponible en farmacias o tiendas de afeitado (Osma, Razorock o equivalentes). Si aún no tienes: hielo directo + papel limpio + presión 60 seg sin frotar.</div></div></div>
+```
+
+  </div>
+
+  <!-- TRANSICIÓN -->
+
+  <div class="tab-panel" id="panel-transicion">
+    <div class="section-label">Suspensión de Zudenina Plus</div>
+    <div class="alert alert-danger" style="margin-bottom:18px;">
+      <span class="alert-label">🚫 Zudenina Plus — Suspendida 13 Mar 2026</span>
+      Adapaleno 0.1g + Clindamicina 1.0g · Venta bajo fórmula médica. +1 año sin prescripción. Uso prolongado de clindamicina tópica genera resistencia de C. acnes (Eady et al., JAAD). Guías AAD/EDF: máximo 3 meses.
+    </div>
+
+```
+<div class="tracker">
+  <div class="tracker-title">¿En qué fase estoy?</div>
+  <div class="tracker-sub">Toca la fase que corresponde a tu semana actual.</div>
+  <div class="tracker-phases">
+    <div class="tracker-phase current" onclick="selectPhase(0)"><span class="phase-num">1–2</span>Recuperación</div>
+    <div class="tracker-phase" onclick="selectPhase(1)"><span class="phase-num">3–4</span>Benzac puntual</div>
+    <div class="tracker-phase" onclick="selectPhase(2)"><span class="phase-num">5–8</span>Benzac zonas</div>
+    <div class="tracker-phase" onclick="selectPhase(3)"><span class="phase-num">8+</span>Dermatólogo</div>
+  </div>
+  <div class="phase-desc" id="phase-desc">
+    <strong>Semanas 1-2 — Recuperación de barrera</strong><br><br>
+    Solo Eucerin + Hydraskin cada noche. Sin activos agresivos. El adapaleno tiene efecto residual — agregar otro activo inmediatamente puede irritar. Si hay brotes urgentes: Benzac AC con hisopo puntual sobre la lesión individual solamente.
+  </div>
+</div>
+
+<div class="divider"></div>
+<div class="section-label">Reglas durante la transición</div>
+<div class="step-static"><div class="step-num">T1</div><div class="step-body"><div class="step-name">Benzac AC nunca en noche de afeitado</div><div class="step-detail">Solo hidratante esa noche. Sin excepción.</div></div></div>
+<div class="step-static"><div class="step-num">T2</div><div class="step-body"><div class="step-name">No mezclar activos</div><div class="step-detail">Benzac va solo. Sin Avene Comedomed ni ácido salicílico en la misma sesión.</div></div></div>
+<div class="step-static"><div class="step-num">T3</div><div class="step-body"><div class="step-name">Azelac pre-afeitado no cuenta</div><div class="step-detail">Se aplica antes del gym, no después de la ducha. No interfiere con el protocolo nocturno posterior.</div></div></div>
+<div class="step-static"><div class="step-num">T4</div><div class="step-body"><div class="step-name">Dermatólogo antes de semana 8</div><div class="step-detail">Evaluación obligatoria para protocolo definitivo.</div></div></div>
+
+<div class="divider"></div>
+<div class="section-label">Activos permitidos por fase</div>
+<div style="overflow-x:auto;border-radius:var(--radius);">
+  <table class="permit-table">
+    <thead><tr><th>Producto</th><th>S 1-2</th><th>S 3-4</th><th>S 5-8</th></tr></thead>
+    <tbody>
+      <tr><td>Eucerin Dermopure</td><td class="ok-cell">✓</td><td class="ok-cell">✓</td><td class="ok-cell">✓</td></tr>
+      <tr><td>Hydraskin</td><td class="ok-cell">✓</td><td class="ok-cell">✓</td><td class="ok-cell">✓</td></tr>
+      <tr><td>Cetaphil Sun SPF 50+</td><td class="ok-cell">✓</td><td class="ok-cell">✓</td><td class="ok-cell">✓</td></tr>
+      <tr><td>Azelac Loción (pre-afeitado)</td><td class="ok-cell">✓</td><td class="ok-cell">✓</td><td class="ok-cell">✓</td></tr>
+      <tr><td>Avene Comedomed (puntual · mañana)</td><td class="ok-cell">✓</td><td class="ok-cell">✓</td><td class="ok-cell">✓</td></tr>
+      <tr><td>Benzac AC — puntual (noche)</td><td class="no-cell">✗</td><td class="half-cell">± puntual</td><td class="ok-cell">✓</td></tr>
+      <tr><td>Pimple patches</td><td class="ok-cell">✓</td><td class="ok-cell">✓</td><td class="ok-cell">✓</td></tr>
+      <tr><td style="color:var(--danger);font-style:italic;">Zudenina Plus — SUSPENDIDA</td><td class="no-cell">✗</td><td class="no-cell">✗</td><td class="no-cell">✗</td></tr>
+    </tbody>
+  </table>
+</div>
+```
+
+  </div>
+
+</div>
+
+<script>
+  const totals = { m:4, s1:3, s2:4, s3:6 };
+  const counts = { m:0, s1:0, s2:0, s3:0 };
+
+  function switchTab(n) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-'+n).classList.add('active');
+    document.getElementById('tab-'+n).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function switchSub(g,s) {
+    document.querySelectorAll(`[id^="subpanel-${g}-"]`).forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll(`[id^="subtab-${g}-"]`).forEach(t=>t.classList.remove('active'));
+    document.getElementById(`subpanel-${g}-${s}`).classList.add('active');
+    document.getElementById(`subtab-${g}-${s}`).classList.add('active');
+  }
+
+  function toggleStep(el,g) {
+    const was = el.classList.contains('checked');
+    el.classList.toggle('checked');
+    counts[g] += was ? -1 : 1;
+    updateProg(g);
+  }
+
+  function updateProg(g) {
+    const done = Math.max(0,Math.min(counts[g],totals[g]));
+    const pct = Math.round(done/totals[g]*100);
+    const id = g==='m'?'m':g;
+    document.getElementById(`prog-${id}-txt`).textContent = `${done} / ${totals[g]}`;
+    document.getElementById(`prog-${id}-bar`).style.width = pct+'%';
+    document.getElementById(`prog-${id}-pct`).textContent = pct+'%';
+  }
+
+  function resetGroup(g) {
+    document.querySelectorAll(`[data-group="${g}"]`).forEach(s=>s.classList.remove('checked'));
+    counts[g]=0; updateProg(g);
+  }
+
+  function toggleDay(el){ el.classList.toggle('selected'); }
+
+  const phases = [
+    { t:'Semanas 1-2 — Recuperación de barrera', b:'Solo Eucerin + Hydraskin cada noche. Sin activos agresivos. El adapaleno tiene efecto residual — agregar otro activo inmediatamente puede irritar. Si hay brotes urgentes: Benzac AC con hisopo puntual sobre la lesión individual solamente.' },
+    { t:'Semanas 3-4 — Reintroducción puntual de Benzac AC', b:'Benzac AC solo sobre lesiones individuales con hisopo. No extender a toda la cara. Observa tolerancia 1 semana antes de continuar. Si hay irritación o descamación: retrocede una semana.' },
+    { t:'Semanas 5-8 — Benzac AC en zonas afectadas', b:'Extiende Benzac AC a las zonas habitualmente afectadas (frente, nariz, mentón). Máximo 3 noches por semana. Las noches de afeitado: solo hidratante, sin excepción.' },
+    { t:'Semana 8+ — Consulta dermatológica obligatoria', b:'Evaluación profesional para determinar si hay resistencia a clindamicina y cuál es el protocolo definitivo. Este protocolo cumplió su función.' }
+  ];
+
+  function selectPhase(i) {
+    document.querySelectorAll('.tracker-phase').forEach((p,idx)=>p.classList.toggle('current',idx===i));
+    const d=document.getElementById('phase-desc');
+    d.innerHTML=`<strong>${phases[i].t}</strong><br><br>${phases[i].b}`;
+  }
+</script>
+
+</body>
+</html>
