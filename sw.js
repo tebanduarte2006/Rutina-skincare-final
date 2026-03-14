@@ -49,3 +49,8 @@ self.addEventListener("message",e=>{
 if(e.data==="SKIP_WAITING")self.skipWaiting()
 
 })
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js");
+  });
+}
