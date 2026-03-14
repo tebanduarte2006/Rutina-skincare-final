@@ -2,6 +2,9 @@
 
 <html lang="es">
 <head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#173554">
+<link rel="apple-touch-icon" href="icon-192.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -766,6 +769,42 @@ line-height: 1.4;
     d.innerHTML=`<strong>${phases[i].t}</strong><br><br>${phases[i].b}`;
   }
 </script>
+<script>
 
+function dailyResetCheck(){
+
+  const today = new Date().toDateString();
+  const lastUse = localStorage.getItem("rutina-last-use");
+
+  if(lastUse !== today){
+
+    document.querySelectorAll(".step").forEach(step=>{
+      step.classList.remove("checked");
+    });
+
+    Object.keys(counts).forEach(k=>{
+      counts[k]=0;
+      updateProg(k);
+    });
+
+    localStorage.setItem("rutina-last-use",today);
+
+  }
+
+}
+
+document.addEventListener("DOMContentLoaded",dailyResetCheck);
+
+if("serviceWorker" in navigator){
+
+  window.addEventListener("load",()=>{
+
+    navigator.serviceWorker.register("sw.js");
+
+  });
+
+}
+
+</script>
 </body>
 </html>
