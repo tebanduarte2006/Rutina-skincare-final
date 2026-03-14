@@ -1,8 +1,9 @@
 const steps=document.querySelectorAll(".step")
 
-function toggleStep(step){
+js function toggleStep(step) { const group = step.dataset.group; const was = step.classList.contains("checked"); step.classList.toggle("checked"); if(group) updateProg(group); saveProgress(); if(navigator.vibrate){ navigator.vibrate(20); } } {
 
 step.classList.toggle("checked")
+step.setAttribute('aria-checked', step.classList.contains('checked'));
 
 saveProgress()
 
@@ -22,7 +23,7 @@ toggleStep(step)
 
 })
 
-function saveProgress(){
+js function saveProgress(){ const state = []; document.querySelectorAll(”.step”).forEach(step => { const group = step.dataset.group; const stepNum = step.dataset.stepNum{
 
 const state=[]
 
@@ -36,7 +37,7 @@ localStorage.setItem("routine-state",JSON.stringify(state))
 
 }
 
-function loadProgress(){
+js function loadProgress(){ const state = JSON.parse(localStorage.getItem(“routine-state”){
 
 const state=JSON.parse(localStorage.getItem("routine-state")||"[]")
 
@@ -63,10 +64,11 @@ localStorage.setItem("routine-date",today)
 }
 
 }
-
-loadProgress()
+                              
 
 dailyReset()
+                              
+loadProgress()
 
 if("serviceWorker" in navigator){
 
@@ -76,7 +78,9 @@ const reg=await navigator.serviceWorker.register("./sw.js")
 
 reg.addEventListener("updatefound",()=>{
 
-const worker=reg.installing
+
+const worker = reg.installing;
+if(!worker) return;
 
 worker.addEventListener("statechange",()=>{
 
