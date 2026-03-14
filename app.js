@@ -139,9 +139,70 @@ desc.innerHTML=texts[index]
 }
 
 if("serviceWorker" in navigator){
-window.addEventListener("load",()=>{
-navigator.serviceWorker.register("sw.js")
+
+window.addEventListener("load",async()=>{
+
+const reg=await navigator.serviceWorker.register("sw.js")
+
+reg.addEventListener("updatefound",()=>{
+
+const newWorker=reg.installing
+
+newWorker.addEventListener("statechange",()=>{
+
+if(newWorker.state==="installed" && navigator.serviceWorker.controller){
+
+showUpdatePrompt(newWorker)
+
+}
+
 })
+
+})
+
+})
+
+}
+
+function showUpdatePrompt(worker){
+
+let updateBanner=document.createElement("div")
+
+updateBanner.style.position="fixed"
+updateBanner.style.bottom="20px"
+updateBanner.style.left="20px"
+updateBanner.style.right="20px"
+updateBanner.style.background="#1d3552"
+updateBanner.style.color="white"
+updateBanner.style.padding="14px"
+updateBanner.style.borderRadius="10px"
+updateBanner.style.boxShadow="0 6px 20px rgba(0,0,0,0.3)"
+updateBanner.style.fontSize="14px"
+updateBanner.style.zIndex="9999"
+
+updateBanner.innerHTML=`
+Nueva versión disponible
+<button id="updateBtn" style="
+margin-left:10px;
+background:#3f8ed0;
+border:none;
+color:white;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
+">Actualizar</button>
+`
+
+document.body.appendChild(updateBanner)
+
+document.getElementById("updateBtn").addEventListener("click",()=>{
+
+worker.postMessage("SKIP_WAITING")
+
+window.location.reload()
+
+})
+
 }
 
 checkDailyReset()
