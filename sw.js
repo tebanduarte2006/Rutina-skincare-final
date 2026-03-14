@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v2"
+const CACHE_VERSION = "v3"
 const CACHE_NAME = "rutina-cache-" + CACHE_VERSION
 
 const ASSETS = [
@@ -66,5 +66,13 @@ return fetch(event.request)
 })
 
 )
+
+})
+
+self.addEventListener("message", event => {
+
+if(event.data === "SKIP_WAITING"){
+self.skipWaiting()
+}
 
 })
