@@ -8,7 +8,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Rutina">
 <title>Rutina · Esteban</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  @font-face { font-family: "Outfit"; src: local("SF Pro Rounded"), local("Nunito"), local("Trebuchet MS"); }
+  @font-face { font-family: "DM Sans"; src: local("SF Pro Text"), local("Segoe UI"), local("Helvetica Neue"); }
+</style>
 <style>
   :root {
     --bg: #f4f8fb;
@@ -43,7 +46,7 @@
 body {
 background: var(–bg);
 color: var(–text);
-font-family: ‘DM Sans’, sans-serif;
+font-family: ‘DM Sans’, -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
 font-weight: 400;
 min-height: 100vh;
 line-height: 1.6;
@@ -68,7 +71,7 @@ justify-content: space-between;
 gap: 12px;
 }
 .header-title {
-font-family: ‘Outfit’, sans-serif;
+font-family: ‘Outfit’, -apple-system, ‘SF Pro Rounded’, ‘Trebuchet MS’, sans-serif;
 font-size: 19px;
 font-weight: 700;
 color: var(–blue-deep);
@@ -80,7 +83,7 @@ color: var(–text-muted);
 margin-top: 2px;
 }
 .phase-pill {
-font-family: ‘Outfit’, sans-serif;
+font-family: ‘Outfit’, -apple-system, ‘SF Pro Rounded’, ‘Trebuchet MS’, sans-serif;
 font-size: 11px;
 font-weight: 600;
 padding: 7px 13px;
@@ -112,7 +115,7 @@ padding: 0 20px;
 }
 .main-tabs::-webkit-scrollbar { display: none; }
 .main-tab {
-font-family: ‘Outfit’, sans-serif;
+font-family: ‘Outfit’, -apple-system, ‘SF Pro Rounded’, ‘Trebuchet MS’, sans-serif;
 font-size: 13px;
 font-weight: 500;
 padding: 13px 16px;
@@ -143,7 +146,7 @@ padding: 22px 20px 56px;
 @keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
 
 .section-label {
-font-family: ‘Outfit’, sans-serif;
+font-family: ‘Outfit’, -apple-system, ‘SF Pro Rounded’, ‘Trebuchet MS’, sans-serif;
 font-size: 11px;
 font-weight: 700;
 letter-spacing: 1.8px;
@@ -155,10 +158,10 @@ margin-top: 26px;
 .section-label:first-child { margin-top: 0; }
 
 .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.prog-label { font-size: 12px; color: var(–text-muted); font-family: ‘Outfit’, sans-serif; min-width: 40px; }
+.prog-label { font-size: 12px; color: var(–text-muted); font-family: ‘Outfit’, -apple-system, ‘SF Pro Rounded’, ‘Trebuchet MS’, sans-serif; min-width: 40px; }
 .prog-wrap { flex: 1; height: 4px; background: var(–border); border-radius: 4px; overflow: hidden; }
 .prog-bar { height: 100%; background: linear-gradient(90deg, var(–blue-mid), var(–blue-light)); border-radius: 4px; transition: width 0.4s cubic-bezier(.4,0,.2,1); width: 0%; }
-.prog-pct { font-size: 12px; color: var(–blue-mid); font-family: ‘Outfit’, sans-serif; font-weight: 700; min-width: 34px; text-align: right; }
+.prog-pct { font-size: 12px; color: var(–blue-mid); font-family: ‘Outfit’, -apple-system, ‘SF Pro Rounded’, ‘Trebuchet MS’, sans-serif; font-weight: 700; min-width: 34px; text-align: right; }
 
 .reset-row { display: flex; justify-content: flex-end; margin-bottom: 10px; }
 .reset-btn {
@@ -169,7 +172,7 @@ border: 1px solid var(–border);
 border-radius: 6px;
 padding: 5px 12px;
 cursor: pointer;
-font-family: ‘Outfit’, sans-serif;
+font-family: ‘Outfit’, -apple-system, ‘SF Pro Rounded’, ‘Trebuchet MS’, sans-serif;
 font-weight: 600;
 letter-spacing: 0.3px;
 transition: all 0.2s;
@@ -197,7 +200,7 @@ user-select: none;
 .step.checked .step-name { text-decoration: line-through; color: var(–text-muted); }
 
 .step-num {
-font-family: ‘Outfit’, sans-serif;
+font-family: ‘Outfit’, -apple-system, ‘SF Pro Rounded’, ‘Trebuchet MS’, sans-serif;
 font-size: 11px;
 font-weight: 700;
 color: var(–blue-light);
@@ -207,7 +210,7 @@ user-select: none;
 }
 .step-body { flex: 1; min-width: 0; }
 .step-name {
-font-family: ‘Outfit’, sans-serif;
+font-family: ‘Outfit’, -apple-system, ‘SF Pro Rounded’, ‘Trebuchet MS’, sans-serif;
 font-size: 15px;
 font-weight: 600;
 color: var(–blue-deep);
@@ -225,7 +228,7 @@ background: var(–surface2);
 border: 1px solid var(–border);
 color: var(–blue-mid);
 margin-top: 7px;
-font-family: ‘Outfit’, sans-serif;
+font-family: ‘Outfit’, -apple-system, ‘SF Pro Rounded’, ‘Trebuchet MS’, sans-serif;
 font-weight: 600;
 }
 
@@ -275,7 +278,7 @@ line-height: 1.6;
 border-left: 3px solid;
 }
 .alert-label {
-font-family: ‘Outfit’, sans-serif;
+font-family: ‘Outfit’, -apple-system, ‘SF Pro Rounded’, ‘Trebuchet MS’, sans-serif;
 font-size: 10px;
 font-weight: 800;
 letter-spacing: 1.2px;
@@ -294,7 +297,7 @@ margin-bottom: 5px;
 
 .sub-tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
 .sub-tab {
-font-family: ‘Outfit’, sans-serif;
+font-family: ‘Outfit’, -apple-system, ‘SF Pro Rounded’, ‘Trebuchet MS’, sans-serif;
 font-size: 12px;
 font-weight: 500;
 padding: 8px 14px;
