@@ -1,3 +1,5 @@
+/* sw.js - service worker robusto (versionado + caching strategies) */
+
 const CACHE_VERSION = "v3";
 const CACHE_NAME = `rutina-cache-${CACHE_VERSION}`;
 const ASSETS = [
@@ -5,10 +7,12 @@ const ASSETS = [
   "./index.html",
   "./styles.css",
   "./app.js",
-  "./manifest.json"
+  "./manifest.json",
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
-// Instalación: cache inicial
+// Install: pre-cache core assets
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
@@ -16,7 +20,7 @@ self.addEventListener("install", event => {
   self.skipWaiting();
 });
 
-// Activación: limpiar caches viejos
+// Activate: delete old caches
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -26,37 +30,46 @@ self.addEventListener("activate", event => {
   self.clients.claim();
 });
 
-// Fetch: Network-first para navigation (index/html), cache-first para assets
+// Fetch: network-first for navigations, cache-first for others
 self.addEventListener("fetch", event => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // Navigation requests -> network first
-  if (req.mode === 'navigate') {
+  if (req.mode === "navigate") {
     event.respondWith(
-      fetch(req).then(res => {
-        const copy = res.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
-        return res;
-      }).catch(() => caches.match('./index.html'))
+      fetch(req)
+        .then(res => {
+          // cache updated HTML
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
+          return res;
+        })
+        .catch(() => caches.match("./index.html"))
     );
     return;
   }
 
-  // For other requests: try cache first, fallback network
+  // For same-origin assets: cache-first with network fallback
   event.respondWith(
-    caches.match(req).then(cached => cached || fetch(req).then(res => {
-      // optionally cache same-origin assets
-      if (url.origin === location.origin) {
-        const copy = res.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
-      }
-      return res;
-    }))
+    caches.match(req).then(cached => {
+      if (cached) return cached;
+      return fetch(req).then(res => {
+        // Only cache successful responses and same-origin
+        if (!res || res.status !== 200 || res.type === "opaque") return res;
+        if (url.origin === location.origin) {
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
+        }
+        return res;
+      }).catch(() => {
+        // Optionally return fallback for images/pages
+        return caches.match("./index.html");
+      });
+    })
   );
 });
 
-// Allow app to tell SW to skipWaiting (already in your code)
+// Allow page to force immediate activation
 self.addEventListener("message", event => {
   if (event.data === "SKIP_WAITING") self.skipWaiting();
 });
