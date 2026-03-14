@@ -2,11 +2,11 @@ const CACHE_VERSION = "v3"
 const CACHE_NAME = "rutina-cache-" + CACHE_VERSION
 
 const ASSETS = [
-"/",
-"/index.html",
-"/styles.css",
-"/app.js",
-"/manifest.json"
+"./",
+"./index.html",
+"./styles.css",
+"./app.js",
+"./manifest.json"
 ]
 
 self.addEventListener("install", event => {
