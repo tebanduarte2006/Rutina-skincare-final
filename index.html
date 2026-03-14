@@ -2,19 +2,24 @@
 
 <html lang="es">
 <head>
-<link rel="manifest" href="manifest.json">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#1d3552">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rutina · Esteban</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1d3552">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Rutina">
-<title>Rutina · Esteban</title>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
+
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">  
+
+<link rel="stylesheet" href="styles.css">
+
+</head>
+
 <style>
   :root {
     --bg: #f4f8fb;
@@ -74,7 +79,7 @@ justify-content: space-between;
 gap: 12px;
 }
 .header-title {
-font-family: ‘Outfit', sans-serif;
+font-family: 'Outfit', sans-serif;
 font-size: 19px;
 font-weight: 700;
 color: var(--blue-deep);
@@ -86,7 +91,7 @@ color: var(--text-muted);
 margin-top: 2px;
 }
 .phase-pill {
-font-family: ‘Outfit', sans-serif;
+font-family: 'Outfit', sans-serif;
 font-size: 11px;
 font-weight: 600;
 padding: 7px 13px;
@@ -118,7 +123,7 @@ padding: 0 20px;
 }
 .main-tabs::-webkit-scrollbar { display: none; }
 .main-tab {
-font-family: ‘Outfit', sans-serif;
+font-family: 'Outfit', sans-serif;
 font-size: 13px;
 font-weight: 500;
 padding: 13px 16px;
@@ -149,7 +154,7 @@ padding: 22px 20px 56px;
 @keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
 
 .section-label {
-font-family: ‘Outfit', sans-serif;
+font-family: 'Outfit', sans-serif;
 font-size: 11px;
 font-weight: 700;
 letter-spacing: 1.8px;
@@ -161,10 +166,10 @@ margin-top: 26px;
 .section-label:first-child { margin-top: 0; }
 
 .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.prog-label { font-size: 12px; color: var(--text-muted); font-family: ‘Outfit', sans-serif; min-width: 40px; }
+.prog-label { font-size: 12px; color: var(--text-muted); font-family: 'Outfit', sans-serif; min-width: 40px; }
 .prog-wrap { flex: 1; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
 .prog-bar { height: 100%; background: linear-gradient(90deg, var(--blue-mid), var(--blue-light)); border-radius: 4px; transition: width 0.4s cubic-bezier(.4,0,.2,1); width: 0%; }
-.prog-pct { font-size: 12px; color: var(--blue-mid); font-family: ‘Outfit', sans-serif; font-weight: 700; min-width: 34px; text-align: right; }
+.prog-pct { font-size: 12px; color: var(--blue-mid); font-family: 'Outfit', sans-serif; font-weight: 700; min-width: 34px; text-align: right; }
 
 .reset-row { display: flex; justify-content: flex-end; margin-bottom: 10px; }
 .reset-btn {
@@ -175,7 +180,7 @@ border: 1px solid var(--border);
 border-radius: 6px;
 padding: 5px 12px;
 cursor: pointer;
-font-family: ‘Outfit', sans-serif;
+font-family: 'Outfit', sans-serif;
 font-weight: 600;
 letter-spacing: 0.3px;
 transition: all 0.2s;
@@ -203,7 +208,7 @@ user-select: none;
 .step.checked .step-name { text-decoration: line-through; color: var(--text-muted); }
 
 .step-num {
-font-family: ‘Outfit', sans-serif;
+font-family: 'Outfit', sans-serif;
 font-size: 11px;
 font-weight: 700;
 color: var(--blue-light);
@@ -213,7 +218,7 @@ user-select: none;
 }
 .step-body { flex: 1; min-width: 0; }
 .step-name {
-font-family: ‘Outfit', sans-serif;
+font-family: 'Outfit', sans-serif;
 font-size: 15px;
 font-weight: 600;
 color: var(--blue-deep);
@@ -231,7 +236,7 @@ background: var(--surface2);
 border: 1px solid var(--border);
 color: var(--blue-mid);
 margin-top: 7px;
-font-family: ‘Outfit', sans-serif;
+font-family: 'Outfit', sans-serif;
 font-weight: 600;
 }
 
@@ -281,7 +286,7 @@ line-height: 1.6;
 border-left: 3px solid;
 }
 .alert-label {
-font-family: ‘Outfit', sans-serif;
+font-family: 'Outfit', sans-serif;
 font-size: 10px;
 font-weight: 800;
 letter-spacing: 1.2px;
@@ -300,7 +305,7 @@ margin-bottom: 5px;
 
 .sub-tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
 .sub-tab {
-font-family: ‘Outfit', sans-serif;
+font-family: 'Outfit', sans-serif;
 font-size: 12px;
 font-weight: 500;
 padding: 8px 14px;
@@ -330,8 +335,8 @@ box-shadow: var(--shadow);
 }
 .razor-card.warn-card { border-color: var(--danger-border); background: var(--danger-bg); }
 .razor-card.ok-card { border-color: var(--ok-border); background: var(--ok-bg); }
-.rc-label { font-family:‘Outfit',sans-serif; font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.8px; margin-bottom:6px; }
-.rc-val { font-family:‘Outfit',sans-serif; font-size:26px; font-weight:800; line-height:1; margin-bottom:4px; }
+.rc-label { font-family:'Outfit',sans-serif; font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.8px; margin-bottom:6px; }
+.rc-val { font-family:'Outfit',sans-serif; font-size:26px; font-weight:800; line-height:1; margin-bottom:4px; }
 .warn-card .rc-val { color: var(--danger); }
 .ok-card .rc-val { color: var(--ok); }
 .rc-val-default { color: var(--blue-deep); }
@@ -339,7 +344,7 @@ box-shadow: var(--shadow);
 
 .day-selector { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 14px; }
 .day-btn {
-font-family:‘Outfit',sans-serif;
+font-family:'Outfit',sans-serif;
 font-size: 12px;
 font-weight: 600;
 width: 42px;
@@ -360,14 +365,14 @@ box-shadow: var(--shadow);
 .day-btn.selected { background: var(--blue-mid); border-color: var(--blue-mid); color: white; }
 
 .tracker { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 18px; box-shadow: var(--shadow); }
-.tracker-title { font-family:‘Outfit',sans-serif; font-size:16px; font-weight:700; color:var(--blue-deep); margin-bottom:3px; }
+.tracker-title { font-family:'Outfit',sans-serif; font-size:16px; font-weight:700; color:var(--blue-deep); margin-bottom:3px; }
 .tracker-sub { font-size:13px; color:var(--text-muted); margin-bottom:16px; }
 
 .tracker-phases { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-bottom: 14px; }
 .tracker-phase {
 padding: 10px 6px;
 text-align: center;
-font-family: ‘Outfit',sans-serif;
+font-family: 'Outfit',sans-serif;
 font-size: 10px;
 font-weight: 600;
 color: var(--text-muted);
@@ -386,7 +391,7 @@ line-height: 1.4;
 
 .permit-table { width:100%; border-collapse:collapse; font-size:13px; background:var(--surface); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); border:1.5px solid var(--border); }
 .permit-table thead tr { background:var(--surface2); border-bottom:1px solid var(--border); }
-.permit-table th { text-align:left; padding:10px 14px; font-family:‘Outfit',sans-serif; font-size:10px; font-weight:700; color:var(--text-muted); letter-spacing:.8px; text-transform:uppercase; }
+.permit-table th { text-align:left; padding:10px 14px; font-family:'Outfit',sans-serif; font-size:10px; font-weight:700; color:var(--text-muted); letter-spacing:.8px; text-transform:uppercase; }
 .permit-table th:not(:first-child) { text-align:center; }
 .permit-table td { padding:10px 14px; border-bottom:1px solid var(--border-light); color:var(--text-mid); }
 .permit-table tr:last-child td { border-bottom:none; }
