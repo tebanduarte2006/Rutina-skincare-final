@@ -1,7 +1,7 @@
 {
 "name": "Rutina Esteban",
 "short_name": "Rutina",
-"start_url": "index.html",
+"start_url": "./"
 "display": "standalone",
 "background_color": "#0f1c2b",
 "theme_color": "#173554",
