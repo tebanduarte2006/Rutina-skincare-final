@@ -1,173 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-  <title>Rutina · Esteban</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- PWA / icons / apple -->
-  <link rel="manifest" href="./manifest.json" />
-  <meta name="theme-color" content="#173554" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Rutina" />
-  <link rel="apple-touch-icon" href="./icon-192.png" />
+<title>Rutina</title>
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="./styles.css" />
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#173554">
 
-  <!-- Accessibility -->
-  <meta name="description" content="Rutina personal diaria de cuidado de la piel — Esteban" />
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<link rel="stylesheet" href="./styles.css">
+
 </head>
+
 <body>
 
-<header>
-  <div class="header-inner">
-    <div>
-      <div class="header-title">Rutina Personal</div>
-      <div class="header-sub">Esteban · Bogotá · Mar 2026</div>
-    </div>
-    <div class="phase-pill" id="phase-pill" role="button" tabindex="0" aria-label="Ir a transición">↗ Transición activa</div>
-  </div>
-</header>
+<h1>Rutina diaria</h1>
 
-<nav class="nav-wrap" aria-label="Pestañas principales">
-  <div class="main-tabs" role="tablist">
-    <button class="main-tab active" id="tab-manana" data-target="manana" role="tab" aria-selected="true">☀ Mañana</button>
-    <button class="main-tab" id="tab-noche" data-target="noche" role="tab" aria-selected="false">◑ Noche</button>
-    <button class="main-tab" id="tab-afeitado" data-target="afeitado" role="tab" aria-selected="false">✦ Afeitado</button>
-    <button class="main-tab" id="tab-transicion" data-target="transicion" role="tab" aria-selected="false">↗ Transición</button>
-  </div>
-</nav>
+<div class="section">
 
-<main class="content" id="app-content">
+<div class="step" data-group="s1">
+Limpiar rostro
+</div>
 
-  <!-- MAÑANA -->
-  <section class="tab-panel active" id="panel-manana" role="tabpanel" aria-labelledby="tab-manana">
-    <div class="section-label">Rutina matutina — Diaria sin excepciones</div>
+<div class="step" data-group="s1">
+Aplicar tónico
+</div>
 
-    <div class="progress-row" aria-hidden="false">
-      <span class="prog-label" id="prog-m-txt">0 / 4</span>
-      <div class="prog-wrap"><div class="prog-bar" id="prog-m-bar" aria-hidden="true"></div></div>
-      <span class="prog-pct" id="prog-m-pct">0%</span>
-    </div>
+<div class="step" data-group="s1">
+Hidratante
+</div>
 
-    <div class="reset-row"><button class="reset-btn" data-reset="m" aria-label="Reiniciar mañana">Reiniciar</button></div>
+</div>
 
-    <div class="steps" id="steps-m">
-      <div class="step" data-group="m">
-        <div class="step-num">01</div>
-        <div class="step-body">
-          <div class="step-name">Limpieza facial en ducha</div>
-          <div class="step-detail">Piel húmeda. Masajea 30-60 seg con movimientos circulares suaves. Enjuaga con agua tibia, nunca caliente.</div>
-          <span class="product-tag">Eucerin Dermopure Oil Control · 400ml</span>
-        </div>
-        <div class="check-box" aria-hidden="true"></div>
-      </div>
+<script src="./app.js"></script>
 
-      <div class="step" data-group="m">
-        <div class="step-num">02</div>
-        <div class="step-body">
-          <div class="step-name">Secar con toque suave</div>
-          <div class="step-detail">Toquecitos con toalla. No frotar. Piel ligeramente húmeda para el siguiente paso.</div>
-        </div>
-        <div class="check-box" aria-hidden="true"></div>
-      </div>
-
-      <div class="step" data-group="m">
-        <div class="step-num">03</div>
-        <div class="step-body">
-          <div class="step-name">Hidratante</div>
-          <div class="step-detail">Capa fina sobre toda la cara. Espera 2 min antes del protector.</div>
-          <span class="product-tag">Hydraskin · Pharmaderm</span>
-        </div>
-        <div class="check-box" aria-hidden="true"></div>
-      </div>
-
-      <div class="step" data-group="m">
-        <div class="step-num">04</div>
-        <div class="step-body">
-          <div class="step-name">Protector solar — no negociable</div>
-          <div class="step-detail">Último paso siempre. UV extremo en Bogotá (índice 10-13). Reaplicar si estás más de 2h en exterior directo.</div>
-          <span class="product-tag">Cetaphil Sun SPF 50+ · piel mixta-grasa</span>
-        </div>
-        <div class="check-box" aria-hidden="true"></div>
-      </div>
-    </div>
-
-    <div class="alert alert-info" role="note">
-      <span class="alert-label">Comedones · Opcional</span>
-      Avene Comedomed puntual sobre lesiones, después del hidratante y antes del SPF. Máx 2-3 veces/semana. No en toda la cara.
-    </div>
-  </section>
-
-  <!-- NOCHE -->
-  <section class="tab-panel" id="panel-noche" role="tabpanel" aria-labelledby="tab-noche">
-    <div class="section-label">Selecciona tu escenario de esta noche</div>
-
-    <div class="sub-tabs" role="tablist" aria-label="Escenarios noche">
-      <button class="sub-tab active" id="subtab-n-s1" data-parent="n" data-target="s1" role="tab" aria-selected="true">Descanso</button>
-      <button class="sub-tab" id="subtab-n-s2" data-parent="n" data-target="s2" role="tab" aria-selected="false">Con tratamiento</button>
-      <button class="sub-tab" id="subtab-n-s3" data-parent="n" data-target="s3" role="tab" aria-selected="false">Noche de afeitado</button>
-    </div>
-
-    <div class="sub-panel active" id="subpanel-n-s1" role="tabpanel" aria-labelledby="subtab-n-s1">
-      <div class="alert alert-ok"><span class="alert-label">✓ Noche de descanso</span>Solo limpieza e hidratación.</div>
-      <div class="progress-row">
-        <span class="prog-label" id="prog-s1-txt">0 / 3</span>
-        <div class="prog-wrap"><div class="prog-bar" id="prog-s1-bar"></div></div>
-        <span class="prog-pct" id="prog-s1-pct">0%</span>
-      </div>
-
-      <div class="reset-row"><button class="reset-btn" data-reset="s1">Reiniciar</button></div>
-
-      <div class="steps" id="steps-s1">
-        <div class="step" data-group="s1">
-          <div class="step-num">01</div>
-          <div class="step-body">
-            <div class="step-name">Ducha + limpieza facial</div>
-            <div class="step-detail">Eucerin en ducha. Agua tibia. Enjuague completo.</div>
-            <span class="product-tag">Eucerin Dermopure Oil Control</span>
-          </div>
-          <div class="check-box" aria-hidden="true"></div>
-        </div>
-
-        <div class="step" data-group="s1">
-          <div class="step-num">02</div>
-          <div class="step-body"><div class="step-name">Secar con toque suave</div><div class="step-detail">Toquecitos, sin fricción.</div></div>
-          <div class="check-box" aria-hidden="true"></div>
-        </div>
-
-        <div class="step" data-group="s1">
-          <div class="step-num">03</div>
-          <div class="step-body"><div class="step-name">Hidratante</div><div class="step-detail">Hydraskin en capa ligera. Fin.</div><span class="product-tag">Hydraskin · Pharmaderm</span></div>
-          <div class="check-box" aria-hidden="true"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Subpanel s2, s3 similar (mantener contenido original) -->
-    <div class="sub-panel" id="subpanel-n-s2" role="tabpanel" aria-labelledby="subtab-n-s2">
-      <!-- contenido -->
-    </div>
-
-    <div class="sub-panel" id="subpanel-n-s3" role="tabpanel" aria-labelledby="subtab-n-s3">
-      <!-- contenido -->
-    </div>
-  </section>
-
-  <!-- AFEITADO y TRANSICIÓN: conservar contenido original -> solo asegúrate data-group en .step -->
-  <section class="tab-panel" id="panel-afeitado" role="tabpanel" aria-labelledby="tab-afeitado">
-    <!-- contenido original... -->
-  </section>
-
-  <section class="tab-panel" id="panel-transicion" role="tabpanel" aria-labelledby="tab-transicion">
-    <!-- contenido original... -->
-  </section>
-
-</main>
-
-<!-- App script -->
-<script src="./app.js" defer></script>
 </body>
+
 </html>
