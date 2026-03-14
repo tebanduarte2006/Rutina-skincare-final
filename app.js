@@ -22,9 +22,7 @@ document.querySelectorAll(".step").forEach(step=>{
 let id=step.dataset.group+"-"+step.querySelector(".step-num").innerText
 
 if(completed.includes(id)){
-
 step.classList.add("completed")
-
 }
 
 })
@@ -47,8 +45,11 @@ localStorage.removeItem(STORAGE_KEY)
 
 }
 
-document.querySelectorAll(".step").forEach(step=>{
-step.addEventListener("click",()=>{
+document.addEventListener("click",function(e){
+
+let step=e.target.closest(".step")
+
+if(step){
 
 step.classList.toggle("completed")
 
@@ -56,7 +57,8 @@ updateProgress(step.dataset.group)
 
 saveProgress()
 
-})
+}
+
 })
 
 function updateProgress(group){
