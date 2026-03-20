@@ -718,61 +718,7 @@ line-height: 1.4;
 
 </div>
 
-<script>
-  const totals = { m:4, s1:3, s2:4, s3:6 };
-  const counts = { m:0, s1:0, s2:0, s3:0 };
 
-  function switchTab(n) {
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('panel-'+n).classList.add('active');
-    document.getElementById('tab-'+n).classList.add('active');
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-
-  function switchSub(g,s) {
-    document.querySelectorAll(`[id^="subpanel-${g}-"]`).forEach(p=>p.classList.remove('active'));
-    document.querySelectorAll(`[id^="subtab-${g}-"]`).forEach(t=>t.classList.remove('active'));
-    document.getElementById(`subpanel-${g}-${s}`).classList.add('active');
-    document.getElementById(`subtab-${g}-${s}`).classList.add('active');
-  }
-
-  function toggleStep(el,g) {
-    const was = el.classList.contains('checked');
-    el.classList.toggle('checked');
-    counts[g] += was ? -1 : 1;
-    updateProg(g);
-  }
-
-  function updateProg(g) {
-    const done = Math.max(0,Math.min(counts[g],totals[g]));
-    const pct = Math.round(done/totals[g]*100);
-    const id = g==='m'?'m':g;
-    document.getElementById(`prog-${id}-txt`).textContent = `${done} / ${totals[g]}`;
-    document.getElementById(`prog-${id}-bar`).style.width = pct+'%';
-    document.getElementById(`prog-${id}-pct`).textContent = pct+'%';
-  }
-
-  function resetGroup(g) {
-    document.querySelectorAll(`[data-group="${g}"]`).forEach(s=>s.classList.remove('checked'));
-    counts[g]=0; updateProg(g);
-  }
-
-  function toggleDay(el){ el.classList.toggle('selected'); }
-
-  const phases = [
-    { t:'Semanas 1-2 — Recuperación de barrera', b:'Solo Eucerin + Hydraskin cada noche. Sin activos agresivos. El adapaleno tiene efecto residual — agregar otro activo inmediatamente puede irritar. Si hay brotes urgentes: Benzac AC con hisopo puntual sobre la lesión individual solamente.' },
-    { t:'Semanas 3-4 — Reintroducción puntual de Benzac AC', b:'Benzac AC solo sobre lesiones individuales con hisopo. No extender a toda la cara. Observa tolerancia 1 semana antes de continuar. Si hay irritación o descamación: retrocede una semana.' },
-    { t:'Semanas 5-8 — Benzac AC en zonas afectadas', b:'Extiende Benzac AC a las zonas habitualmente afectadas (frente, nariz, mentón). Máximo 3 noches por semana. Las noches de afeitado: solo hidratante, sin excepción.' },
-    { t:'Semana 8+ — Consulta dermatológica obligatoria', b:'Evaluación profesional para determinar si hay resistencia a clindamicina y cuál es el protocolo definitivo. Este protocolo cumplió su función.' }
-  ];
-
-  function selectPhase(i) {
-    document.querySelectorAll('.tracker-phase').forEach((p,idx)=>p.classList.toggle('current',idx===i));
-    const d=document.getElementById('phase-desc');
-    d.innerHTML=`<strong>${phases[i].t}</strong><br><br>${phases[i].b}`;
-  }
-</script>
 
 <script src="app.js"></script>
 </body>
