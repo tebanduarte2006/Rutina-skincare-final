@@ -1,56 +1,42 @@
-const CACHE="rutina-v1"
+const CACHE = "rutina-v2";
+const ASSETS = [
+  "./",
+  "./index.html",
+  "./styles.css",
+  "./app.js",
+  "./manifest.json"
+];
 
-const ASSETS=[
-"./",
-"./index.html",
-"./styles.css",
-"./app.js",
-"./manifest.json"
-]
+self.addEventListener("install", function(e) {
+  e.waitUntil(
+    caches.open(CACHE).then(function(cache) {
+      return cache.addAll(ASSETS);
+    })
+  );
+  self.skipWaiting();
+});
 
-self.addEventListener("install",e=>{
+self.addEventListener("activate", function(e) {
+  e.waitUntil(
+    caches.keys().then(function(keys) {
+      return Promise.all(
+        keys.map(function(k) {
+          if (k !== CACHE) return caches.delete(k);
+        })
+      );
+    })
+  );
+  self.clients.claim();
+});
 
-e.waitUntil(
-caches.open(CACHE).then(cache=>cache.addAll(ASSETS))
-)
+self.addEventListener("fetch", function(e) {
+  e.respondWith(
+    caches.match(e.request).then(function(r) {
+      return r || fetch(e.request);
+    })
+  );
+});
 
-self.skipWaiting()
-
-})
-
-self.addEventListener("activate",e=>{
-
-e.waitUntil(
-
-caches.keys().then(keys=>
-Promise. all(
-keys.map(k=>{
-if(k!==CACHE)return caches.delete(k)
-})
-)
-)
-
-)
-
-})
-
-self.addEventListener("fetch",e=>{
-
-e.respondWith(
-
-caches.match(e.request).then(r=>r||fetch(e.request))
-
-)
-
-})
-
-self.addEventListener("message",e=>{
-
-if(e.data==="SKIP_WAITING")self.skipWaiting()
-
-})
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js");
-  });
-}
+self.addEventListener("message", function(e) {
+  if (e.data === "SKIP_WAITING") self.skipWaiting();
+});
