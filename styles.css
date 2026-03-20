@@ -1,55 +1,6 @@
-:root{
-
---bg:#0f1c2b;
---card:#173554;
---text:#eaf2ff;
---accent:#3f8ed0;
-
-}
-
-body{
-
-margin:0;
-font-family:system-ui;
-background:var(--bg);
-color:var(--text);
-padding:20px;
-
-}
-
-h1{
-
-text-align:center;
-margin-bottom:30px;
-
-}
-
-.section{
-
-display:flex;
-flex-direction:column;
-gap:12px;
-
-}
-
-.step{
-
-background:var(--card);
-padding:14px;
-border-radius:10px;
-cursor:pointer;
-transition:all .15s;
-
-}
-
-.step:hover{
-
-transform:translateY(-1px);
-
-}
-
-.step.checked{
-
-background:var(--accent);
-
-}
+/*
+  styles.css
+  Por ahora todos los estilos viven en index.html (<style> embebido).
+  Este archivo se usara en fases futuras para modularizar el CSS.
+  No agregar nada aqui hasta que se tome la decision de migrar.
+*/
