@@ -99,3 +99,84 @@ function showUpdateBanner(worker) {
 // ─── Init ─────────────────────────────────────────────────────────────────────
 dailyReset();
 loadProgress();
+// --- UI: Tabs principales ---
+function switchTab(n) {
+  document.querySelectorAll(".tab-panel").forEach(function(p) {
+    p.classList.remove("active");
+  });
+  document.querySelectorAll(".main-tab").forEach(function(t) {
+    t.classList.remove("active");
+  });
+  document.getElementById("panel-" + n).classList.add("active");
+  document.getElementById("tab-" + n).classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// --- UI: Sub-tabs de noche ---
+function switchSub(g, s) {
+  document.querySelectorAll("[id^='subpanel-" + g + "-']").forEach(function(p) {
+    p.classList.remove("active");
+  });
+  document.querySelectorAll("[id^='subtab-" + g + "-']").forEach(function(t) {
+    t.classList.remove("active");
+  });
+  document.getElementById("subpanel-" + g + "-" + s).classList.add("active");
+  document.getElementById("subtab-" + g + "-" + s).classList.add("active");
+}
+
+// --- UI: Barra de progreso ---
+const totals = { m: 4, s1: 3, s2: 4, s3: 6 };
+const counts  = { m: 0, s1: 0, s2: 0, s3: 0 };
+
+function updateProg(g) {
+  var done = Math.max(0, Math.min(counts[g], totals[g]));
+  var pct  = Math.round(done / totals[g] * 100);
+  var txt  = document.getElementById("prog-" + g + "-txt");
+  var bar  = document.getElementById("prog-" + g + "-bar");
+  var pctEl = document.getElementById("prog-" + g + "-pct");
+  if (txt)   txt.textContent  = done + " / " + totals[g];
+  if (bar)   bar.style.width  = pct + "%";
+  if (pctEl) pctEl.textContent = pct + "%";
+}
+
+function resetGroup(g) {
+  document.querySelectorAll("[data-group='" + g + "']").forEach(function(s) {
+    s.classList.remove("checked");
+    s.setAttribute("aria-checked", "false");
+  });
+  counts[g] = 0;
+  updateProg(g);
+}
+
+// --- UI: Selector de dias ---
+function toggleDay(el) {
+  el.classList.toggle("selected");
+}
+
+// --- UI: Tracker de fases Zudenina ---
+var phases = [
+  {
+    t: "Semanas 1-2 - Recuperacion de barrera",
+    b: "Solo Eucerin + Hydraskin cada noche. Sin activos agresivos. El adapaleno tiene efecto residual: agregar otro activo inmediatamente puede irritar. Si hay brotes urgentes: Benzac AC con hisopo puntual sobre la lesion individual solamente."
+  },
+  {
+    t: "Semanas 3-4 - Reintroduccion puntual de Benzac AC",
+    b: "Benzac AC solo sobre lesiones individuales con hisopo. No extender a toda la cara. Observa tolerancia 1 semana antes de continuar. Si hay irritacion o descamacion: retrocede una semana."
+  },
+  {
+    t: "Semanas 5-8 - Benzac AC en zonas afectadas",
+    b: "Extiende Benzac AC a las zonas habitualmente afectadas (frente, nariz, menton). Maximo 3 noches por semana. Las noches de afeitado: solo hidratante, sin excepcion."
+  },
+  {
+    t: "Semana 8+ - Consulta dermatologica obligatoria",
+    b: "Evaluacion profesional para determinar si hay resistencia a clindamicina y cual es el protocolo definitivo. Este protocolo cumplio su funcion."
+  }
+];
+
+function selectPhase(i) {
+  document.querySelectorAll(".tracker-phase").forEach(function(p, idx) {
+    p.classList.toggle("current", idx === i);
+  });
+  var d = document.getElementById("phase-desc");
+  if (d) d.innerHTML = "<strong>" + phases[i].t + "</strong><br><br>" + phases[i].b;
+}
