@@ -19,8 +19,7 @@ function el(tag, attrs, children) {
 
 // ─── Estado global ─────────────────────────────────────────────────────────────
 
-var _appData   = null;  // rutina.json completo
-var _dayStates = {};    // { day_selector_id: [bool, bool, ...] }
+var _dayStates = {};
 
 // ─── Persistencia ──────────────────────────────────────────────────────────────
 
@@ -50,7 +49,6 @@ function loadSteps() {
       s.setAttribute('aria-checked', 'true');
     }
   });
-  // Recalcular barras de progreso
   var groups = {};
   document.querySelectorAll('.step[data-group]').forEach(function(s) {
     groups[s.dataset.group] = true;
@@ -66,11 +64,10 @@ function loadDays() {
   var raw = localStorage.getItem('routine-days');
   if (!raw) return;
   var saved = JSON.parse(raw);
-  Object.keys(saved).forEach(function(selectorId) {
-    _dayStates[selectorId] = saved[selectorId];
-    var btns = document.querySelectorAll('.day-btn[data-selector="' + selectorId + '"]');
-    btns.forEach(function(btn, i) {
-      if (_dayStates[selectorId][i]) btn.classList.add('selected');
+  Object.keys(saved).forEach(function(sid) {
+    _dayStates[sid] = saved[sid];
+    document.querySelectorAll('.day-btn[data-selector="' + sid + '"]').forEach(function(btn, i) {
+      if (_dayStates[sid][i]) btn.classList.add('selected');
       else btn.classList.remove('selected');
     });
   });
@@ -82,23 +79,18 @@ function savePhase(trackerId, index) {
   localStorage.setItem('routine-phases', JSON.stringify(phases));
 }
 
-function loadPhases() {
-  var saved = JSON.parse(localStorage.getItem('routine-phases') || '{}');
-  return saved;
-}
-
 // ─── Toggle paso ───────────────────────────────────────────────────────────────
 
-function toggleStep(el, group) {
-  var was = el.classList.contains('checked');
-  el.classList.toggle('checked');
-  el.setAttribute('aria-checked', String(!was));
+function toggleStep(stepEl, group) {
+  var was = stepEl.classList.contains('checked');
+  stepEl.classList.toggle('checked');
+  stepEl.setAttribute('aria-checked', String(!was));
   updateProg(group);
   saveSteps();
   if (navigator.vibrate) navigator.vibrate(20);
 }
 
-// ─── Barra de progreso ─────────────────────────────────────────────────────────
+// ─── Progreso ──────────────────────────────────────────────────────────────────
 
 function updateProg(g) {
   var all     = document.querySelectorAll('.step[data-group="' + g + '"]');
@@ -127,29 +119,28 @@ function resetGroup(g) {
 // ─── Tabs ──────────────────────────────────────────────────────────────────────
 
 function switchTab(moduleId, tabId) {
-  var prefix = moduleId + '-';
   document.querySelectorAll('.tab-panel[data-module="' + moduleId + '"]').forEach(function(p) {
     p.classList.remove('active');
   });
   document.querySelectorAll('.main-tab[data-module="' + moduleId + '"]').forEach(function(t) {
     t.classList.remove('active');
   });
-  var panel = document.getElementById('panel-' + prefix + tabId);
-  var tab   = document.getElementById('tab-' + prefix + tabId);
+  var panel = document.getElementById('panel-' + moduleId + '-' + tabId);
+  var tab   = document.getElementById('tab-' + moduleId + '-' + tabId);
   if (panel) panel.classList.add('active');
   if (tab)   tab.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function switchSub(group, scenarioId) {
-  document.querySelectorAll('[id^="subpanel-' + group + '-"]').forEach(function(p) {
+function switchSub(groupId, scenarioId) {
+  document.querySelectorAll('[id^="subpanel-' + groupId + '-"]').forEach(function(p) {
     p.classList.remove('active');
   });
-  document.querySelectorAll('[id^="subtab-' + group + '-"]').forEach(function(t) {
+  document.querySelectorAll('[id^="subtab-' + groupId + '-"]').forEach(function(t) {
     t.classList.remove('active');
   });
-  var panel = document.getElementById('subpanel-' + group + '-' + scenarioId);
-  var tab   = document.getElementById('subtab-' + group + '-' + scenarioId);
+  var panel = document.getElementById('subpanel-' + groupId + '-' + scenarioId);
+  var tab   = document.getElementById('subtab-' + groupId + '-' + scenarioId);
   if (panel) panel.classList.add('active');
   if (tab)   tab.classList.add('active');
 }
@@ -170,108 +161,93 @@ function selectPhase(trackerId, index, phases) {
     p.classList.toggle('current', i === index);
   });
   var desc = document.getElementById('phase-desc-' + trackerId);
-  if (desc) {
-    desc.innerHTML = '<strong>' + phases[index].title + '</strong><br><br>' + phases[index].description;
-  }
+  if (desc) desc.innerHTML = '<strong>' + phases[index].title + '</strong><br><br>' + phases[index].description;
   savePhase(trackerId, index);
 }
 
-// ─── Renderers de secciones ───────────────────────────────────────────────────
+// ─── Renderers ────────────────────────────────────────────────────────────────
 
 function renderChecklist(sec) {
-  var wrap  = el('div', { class: 'steps' });
-  sec.steps.forEach(function(step) {
-    var body = el('div', { class: 'step-body' }, [
-      el('div', { class: 'step-name' }, [step.name]),
-      step.detail ? el('div', { class: 'step-detail' }, [step.detail]) : null,
-      step.product ? el('span', { class: 'product-tag' }, [step.product]) : null
-    ]);
-    var num  = el('div', { class: 'step-num' }, [sec.id ? '' : '']);
-    var box  = el('div', { class: 'check-box' });
-    var row  = el('div', {
+  var wrap = el('div', { class: 'steps' });
+  sec.steps.forEach(function(step, i) {
+    var children = [
+      el('div', { class: 'step-name' }, [step.name])
+    ];
+    if (step.detail) children.push(el('div', { class: 'step-detail' }, [step.detail]));
+    if (step.product) children.push(el('span', { class: 'product-tag' }, [step.product]));
+
+    var row = el('div', {
       class: 'step',
       'data-id': step.id,
       'data-group': sec.id,
       'aria-checked': 'false',
       role: 'checkbox'
-    }, [num, body, box]);
+    }, [
+      el('div', { class: 'step-num' }, [String(i + 1).padStart(2, '0')]),
+      el('div', { class: 'step-body' }, children),
+      el('div', { class: 'check-box' })
+    ]);
     row.addEventListener('click', function() { toggleStep(row, sec.id); });
     wrap.appendChild(row);
   });
-  // Numerar
-  var nums = wrap.querySelectorAll('.step-num');
-  nums.forEach(function(n, i) { n.textContent = String(i + 1).padStart(2, '0'); });
 
-  var frag = document.createDocumentFragment();
-  if (sec.label) {
-    frag.appendChild(el('div', { class: 'section-label' }, [sec.label]));
-  }
-  frag.appendChild(el('div', { class: 'progress-row' }, [
+  var container = document.createDocumentFragment();
+  if (sec.label) container.appendChild(el('div', { class: 'section-label' }, [sec.label]));
+  container.appendChild(el('div', { class: 'progress-row' }, [
     el('span', { class: 'prog-label', id: 'prog-' + sec.id + '-txt' }, ['0 / ' + sec.steps.length]),
-    el('div', { class: 'prog-wrap' }, [el('div', { class: 'prog-bar', id: 'prog-' + sec.id + '-bar' })]),
-    el('span', { class: 'prog-pct', id: 'prog-' + sec.id + '-pct' }, ['0%'])
+    el('div',  { class: 'prog-wrap' }, [el('div', { class: 'prog-bar', id: 'prog-' + sec.id + '-bar' })]),
+    el('span', { class: 'prog-pct',   id: 'prog-' + sec.id + '-pct' }, ['0%'])
   ]));
-  frag.appendChild(el('div', { class: 'reset-row' }, [
-    (function() {
-      var btn = el('button', { class: 'reset-btn' }, ['Reiniciar']);
-      btn.addEventListener('click', function() { resetGroup(sec.id); });
-      return btn;
-    })()
-  ]));
-  frag.appendChild(wrap);
-  return frag;
+  var resetBtn = el('button', { class: 'reset-btn' }, ['Reiniciar']);
+  resetBtn.addEventListener('click', function() { resetGroup(sec.id); });
+  container.appendChild(el('div', { class: 'reset-row' }, [resetBtn]));
+  container.appendChild(wrap);
+  return container;
 }
 
 function renderScenarioPicker(sec) {
-  var group    = sec.scenarios[0].id.split('_')[0] || 'n';
-  var subTabs  = el('div', { class: 'sub-tabs' });
-  var panels   = document.createDocumentFragment();
+  // Usar un ID de grupo basado en el id del picker o en el primer scenario
+  var groupId = sec.id || 'n';
 
+  var container = document.createDocumentFragment();
+  if (sec.label) container.appendChild(el('div', { class: 'section-label' }, [sec.label]));
+
+  // Sub-tabs bar
+  var subTabsEl = el('div', { class: 'sub-tabs' });
+  container.appendChild(subTabsEl);
+
+  // Construir cada scenario: tab + panel
   sec.scenarios.forEach(function(scenario, i) {
-    var tabBtn = el('button', {
-      class: 'sub-tab' + (i === 0 ? ' active' : ''),
-      id: 'subtab-' + group + '-' + scenario.id
-    }, [scenario.label]);
-    tabBtn.addEventListener('click', function() { switchSub(group, scenario.id); });
-    subTabs.appendChild(tabBtn);
+    var isFirst = i === 0;
 
+    // Tab button
+    var tabBtn = el('button', {
+      class: 'sub-tab' + (isFirst ? ' active' : ''),
+      id: 'subtab-' + groupId + '-' + scenario.id
+    }, [scenario.label]);
+    (function(sid) {
+      tabBtn.addEventListener('click', function() { switchSub(groupId, sid); });
+    })(scenario.id);
+    subTabsEl.appendChild(tabBtn);
+
+    // Panel — construido directamente como elemento (no fragment) para poder asignar id
     var panel = el('div', {
-      class: 'sub-panel' + (i === 0 ? ' active' : ''),
-      id: 'subpanel-' + group + '-' + scenario.id
+      class: 'sub-panel' + (isFirst ? ' active' : ''),
+      id: 'subpanel-' + groupId + '-' + scenario.id
     });
+
+    // Renderizar secciones hijas y agregarlas al panel directamente
     scenario.sections.forEach(function(childSec) {
       var rendered = renderSection(childSec);
-      if (rendered) {
-        if (rendered.nodeType === 11) panel.appendChild(rendered);
-        else panel.appendChild(rendered);
-      }
+      if (!rendered) return;
+      // renderSection puede devolver Fragment o Element
+      panel.appendChild(rendered);
     });
-    panels.appendChild(panel);
+
+    container.appendChild(panel);
   });
 
-  var frag = document.createDocumentFragment();
-  if (sec.label) frag.appendChild(el('div', { class: 'section-label' }, [sec.label]));
-  frag.appendChild(subTabs);
-  var panelsWrap = document.createDocumentFragment();
-  // Move children from panels fragment to a real element then back
-  var panelsEl = el('div');
-  // panels is a DocumentFragment — just append it
-  frag.appendChild(subTabs);
-  // Append each panel directly
-  sec.scenarios.forEach(function(scenario, i) {
-    // already built above, re-query
-  });
-  // Rebuild cleanly
-  return (function() {
-    var f = document.createDocumentFragment();
-    if (sec.label) f.appendChild(el('div', { class: 'section-label' }, [sec.label]));
-    f.appendChild(subTabs);
-    sec.scenarios.forEach(function(scenario, i) {
-      var panel = document.getElementById('subpanel-' + group + '-' + scenario.id);
-      if (panel) f.appendChild(panel);
-    });
-    return f;
-  })();
+  return container;
 }
 
 function renderAlert(sec) {
@@ -284,114 +260,112 @@ function renderAlert(sec) {
 function renderRules(sec) {
   var wrap = el('div', { class: 'steps-static' });
   sec.items.forEach(function(item) {
-    var body = el('div', { class: 'step-body' }, [
-      el('div', { class: 'step-name' }, [item.name]),
-      item.detail ? el('div', { class: 'step-detail' }, [item.detail]) : null
-    ]);
+    var bodyChildren = [el('div', { class: 'step-name' }, [item.name])];
+    if (item.detail) bodyChildren.push(el('div', { class: 'step-detail' }, [item.detail]));
     wrap.appendChild(el('div', { class: 'step-static' }, [
       el('div', { class: 'step-num' }, [item.id]),
-      body
+      el('div', { class: 'step-body' }, bodyChildren)
     ]));
   });
-  var frag = document.createDocumentFragment();
-  if (sec.label) frag.appendChild(el('div', { class: 'section-label' }, [sec.label]));
-  frag.appendChild(wrap);
-  return frag;
+  var container = document.createDocumentFragment();
+  if (sec.label) container.appendChild(el('div', { class: 'section-label' }, [sec.label]));
+  container.appendChild(wrap);
+  return container;
 }
 
 function renderMetricGrid(sec) {
   var grid = el('div', { class: 'razor-grid' });
   sec.items.forEach(function(item) {
-    var card = el('div', { class: 'razor-card' + (item.variant === 'warn' ? ' warn-card' : item.variant === 'ok' ? ' ok-card' : '') }, [
+    var variantClass = item.variant === 'warn' ? ' warn-card' : item.variant === 'ok' ? ' ok-card' : '';
+    var valClass = 'rc-val' + (item.variant === 'default' ? ' rc-val-default' : '');
+    grid.appendChild(el('div', { class: 'razor-card' + variantClass }, [
       el('div', { class: 'rc-label' }, [item.label]),
-      el('div', { class: 'rc-val' + (item.variant === 'default' ? ' rc-val-default' : '') }, [item.value]),
-      el('div', { class: 'rc-sub' }, [item.sublabel])
-    ]);
-    grid.appendChild(card);
+      el('div', { class: valClass },   [item.value]),
+      el('div', { class: 'rc-sub' },   [item.sublabel])
+    ]));
   });
-  var frag = document.createDocumentFragment();
-  if (sec.label) frag.appendChild(el('div', { class: 'section-label' }, [sec.label]));
-  frag.appendChild(grid);
-  return frag;
+  var container = document.createDocumentFragment();
+  if (sec.label) container.appendChild(el('div', { class: 'section-label' }, [sec.label]));
+  container.appendChild(grid);
+  return container;
 }
 
 function renderDaySelector(sec) {
-  var selectorId = sec.id || ('daysel_' + Math.random().toString(36).slice(2));
-  if (!_dayStates[selectorId]) {
-    _dayStates[selectorId] = sec.days.map(function(_, i) {
+  var sid = sec.id || ('ds_' + Math.random().toString(36).slice(2));
+  if (!_dayStates[sid]) {
+    _dayStates[sid] = sec.days.map(function(_, i) {
       return (sec.default_selected || []).indexOf(i) >= 0;
     });
   }
   var wrap = el('div', { class: 'day-selector' });
   sec.days.forEach(function(day, i) {
-    var isSelected = _dayStates[selectorId][i];
     var btn = el('button', {
-      class: 'day-btn' + (isSelected ? ' selected' : ''),
-      'data-selector': selectorId
+      class: 'day-btn' + (_dayStates[sid][i] ? ' selected' : ''),
+      'data-selector': sid
     }, [day]);
-    btn.addEventListener('click', function() { toggleDay(btn, selectorId, i); });
+    (function(idx) {
+      btn.addEventListener('click', function() { toggleDay(btn, sid, idx); });
+    })(i);
     wrap.appendChild(btn);
   });
-  var frag = document.createDocumentFragment();
-  if (sec.label) frag.appendChild(el('div', { class: 'section-label' }, [sec.label]));
-  if (sec.sublabel) frag.appendChild(el('p', { style: 'font-size:13px;color:var(--text-muted);margin-bottom:10px;' }, [sec.sublabel]));
-  frag.appendChild(wrap);
-  return frag;
+  var container = document.createDocumentFragment();
+  if (sec.label) container.appendChild(el('div', { class: 'section-label' }, [sec.label]));
+  if (sec.sublabel) container.appendChild(el('p', { style: 'font-size:13px;color:var(--text-muted);margin-bottom:10px;' }, [sec.sublabel]));
+  container.appendChild(wrap);
+  return container;
 }
 
 function renderPhaseTracker(sec) {
-  var trackerId = sec.id || ('tracker_' + Math.random().toString(36).slice(2));
-  var savedPhases = loadPhases();
-  var defaultPhase = savedPhases[trackerId] !== undefined ? savedPhases[trackerId] : (sec.default || 0);
+  var tid = sec.id || ('tr_' + Math.random().toString(36).slice(2));
+  var saved = JSON.parse(localStorage.getItem('routine-phases') || '{}');
+  var def   = saved[tid] !== undefined ? saved[tid] : (sec.default || 0);
 
   var phasesGrid = el('div', { class: 'tracker-phases' });
   sec.phases.forEach(function(phase, i) {
     var card = el('div', {
-      class: 'tracker-phase' + (i === defaultPhase ? ' current' : ''),
-      'data-tracker': trackerId
+      class: 'tracker-phase' + (i === def ? ' current' : ''),
+      'data-tracker': tid
     }, [
       el('span', { class: 'phase-num' }, [phase.label]),
       document.createTextNode(phase.sublabel)
     ]);
-    card.addEventListener('click', function() { selectPhase(trackerId, i, sec.phases); });
+    (function(idx) {
+      card.addEventListener('click', function() { selectPhase(tid, idx, sec.phases); });
+    })(i);
     phasesGrid.appendChild(card);
   });
 
-  var desc = el('div', { class: 'phase-desc', id: 'phase-desc-' + trackerId }, []);
-  desc.innerHTML = '<strong>' + sec.phases[defaultPhase].title + '</strong><br><br>' + sec.phases[defaultPhase].description;
+  var desc = el('div', { class: 'phase-desc', id: 'phase-desc-' + tid });
+  desc.innerHTML = '<strong>' + sec.phases[def].title + '</strong><br><br>' + sec.phases[def].description;
 
-  var tracker = el('div', { class: 'tracker' }, [
+  return el('div', { class: 'tracker' }, [
     el('div', { class: 'tracker-title' }, [sec.title]),
-    el('div', { class: 'tracker-sub' }, [sec.subtitle]),
+    el('div', { class: 'tracker-sub'   }, [sec.subtitle]),
     phasesGrid,
     desc
   ]);
-  return tracker;
 }
 
 function renderPermitTable(sec) {
-  var thead = el('thead', null, [
-    el('tr', null, sec.columns.map(function(col) {
-      return el('th', null, [col]);
-    }))
-  ]);
-  var tbody = el('tbody');
-  sec.rows.forEach(function(row) {
-    var tr = el('tr');
-    var tdProduct = el('td', row.highlight ? { style: 'color:var(--' + (row.highlight === 'danger' ? 'red' : row.highlight) + ');font-style:italic;' } : null, [row.product]);
-    tr.appendChild(tdProduct);
+  var rows = sec.rows.map(function(row) {
+    var cells = [el('td', row.highlight ? { style: 'color:var(--' + (row.highlight === 'danger' ? 'red' : row.highlight) + ');font-style:italic;' } : null, [row.product])];
     row.values.forEach(function(val) {
       var cls = val === 'ok' ? 'ok-cell' : val === 'no' ? 'no-cell' : 'half-cell';
       var sym = val === 'ok' ? '✓' : val === 'no' ? '✗' : '± puntual';
-      tr.appendChild(el('td', { class: cls }, [sym]));
+      cells.push(el('td', { class: cls }, [sym]));
     });
-    tbody.appendChild(tr);
+    return el('tr', null, cells);
   });
-  var table = el('table', { class: 'permit-table' }, [thead, tbody]);
-  var frag = document.createDocumentFragment();
-  if (sec.label) frag.appendChild(el('div', { class: 'section-label' }, [sec.label]));
-  frag.appendChild(el('div', { style: 'overflow-x:auto;border-radius:var(--radius);' }, [table]));
-  return frag;
+
+  var table = el('table', { class: 'permit-table' }, [
+    el('thead', null, [el('tr', null, sec.columns.map(function(c) { return el('th', null, [c]); }))]),
+    el('tbody', null, rows)
+  ]);
+
+  var container = document.createDocumentFragment();
+  if (sec.label) container.appendChild(el('div', { class: 'section-label' }, [sec.label]));
+  container.appendChild(el('div', { style: 'overflow-x:auto;border-radius:var(--radius);' }, [table]));
+  return container;
 }
 
 function renderDivider() {
@@ -413,27 +387,25 @@ function renderSection(sec) {
   }
 }
 
-// ─── Renderizado principal ─────────────────────────────────────────────────────
+// ─── Render principal ──────────────────────────────────────────────────────────
 
 function renderApp(data) {
-  _appData = data;
-
-  // Header
   var titleEl = document.getElementById('app-title');
   var subEl   = document.getElementById('app-subtitle');
   if (titleEl) titleEl.textContent = data.app.title;
   if (subEl)   subEl.textContent   = data.app.subtitle;
 
-  var mainTabsEl  = document.getElementById('main-tabs');
-  var contentEl   = document.getElementById('app-content');
+  var mainTabsEl = document.getElementById('main-tabs');
+  var contentEl  = document.getElementById('app-content');
   if (!mainTabsEl || !contentEl) return;
 
-  // Si hay mas de un modulo, crear selector de modulos
-  // Por ahora renderizamos el primer modulo directamente (escalable a futuro)
+  // Encontrar el primer tab con phase_tracker para el pill
+  var firstTracker = null;
+
   data.modules.forEach(function(module, mIdx) {
     module.tabs.forEach(function(tab, tIdx) {
-      var tabId  = module.id + '-' + tab.id;
       var isFirst = mIdx === 0 && tIdx === 0;
+      var tabId   = module.id + '-' + tab.id;
 
       // Tab button
       var tabBtn = el('button', {
@@ -441,10 +413,12 @@ function renderApp(data) {
         id: 'tab-' + tabId,
         'data-module': module.id
       }, [tab.icon + ' ' + tab.label]);
-      tabBtn.addEventListener('click', function() { switchTab(module.id, tab.id); });
+      (function(mid, tid) {
+        tabBtn.addEventListener('click', function() { switchTab(mid, tid); });
+      })(module.id, tab.id);
       mainTabsEl.appendChild(tabBtn);
 
-      // Tab panel
+      // Panel
       var panel = el('div', {
         class: 'tab-panel' + (isFirst ? ' active' : ''),
         id: 'panel-' + tabId,
@@ -453,31 +427,21 @@ function renderApp(data) {
       tab.sections.forEach(function(sec) {
         var rendered = renderSection(sec);
         if (rendered) panel.appendChild(rendered);
+        // Detectar phase_tracker
+        if (!firstTracker && sec.type === 'phase_tracker') {
+          firstTracker = { moduleId: module.id, tabId: tab.id };
+        }
       });
       contentEl.appendChild(panel);
     });
   });
 
-  // Fase pill — apunta al primer tab con phase_tracker
+  // Phase pill
   var pillEl = document.getElementById('phase-pill');
-  if (pillEl) {
-    var firstTracker = null;
-    outer: for (var m = 0; m < data.modules.length; m++) {
-      for (var t = 0; t < data.modules[m].tabs.length; t++) {
-        var tab = data.modules[m].tabs[t];
-        for (var s = 0; s < tab.sections.length; s++) {
-          if (tab.sections[s].type === 'phase_tracker') {
-            firstTracker = { moduleId: data.modules[m].id, tabId: tab.id };
-            break outer;
-          }
-        }
-      }
-    }
-    if (firstTracker) {
-      pillEl.addEventListener('click', function() {
-        switchTab(firstTracker.moduleId, firstTracker.tabId);
-      });
-    }
+  if (pillEl && firstTracker) {
+    pillEl.addEventListener('click', function() {
+      switchTab(firstTracker.moduleId, firstTracker.tabId);
+    });
   }
 }
 
@@ -495,33 +459,15 @@ if ('serviceWorker' in navigator) {
           }
         });
       });
-    }).catch(function(err) {
-      console.warn('SW registration failed:', err);
-    });
+    }).catch(function(err) { console.warn('SW error:', err); });
   });
 }
 
 function showUpdateBanner(worker) {
-  var banner = el('div', {
-    style: [
-      'position:fixed', 'bottom:20px', 'left:16px', 'right:16px',
-      'background:#1c1c1e', 'color:white', 'padding:14px 16px',
-      'border-radius:14px', 'z-index:9999', 'display:flex',
-      'align-items:center', 'justify-content:space-between', 'gap:12px',
-      'font-family:-apple-system,sans-serif', 'font-size:14px',
-      'border:1px solid rgba(0,255,166,0.3)',
-      'box-shadow:0 0 20px rgba(0,255,166,0.15)'
-    ].join(';')
-  }, [
-    el('span', null, ['Nueva versión disponible'])
-  ]);
-  var btn = el('button', {
-    style: 'background:#00ffa6;color:#000;border:none;border-radius:8px;padding:7px 14px;font-weight:700;cursor:pointer;font-size:13px;'
-  }, ['Actualizar']);
-  btn.addEventListener('click', function() {
-    worker.postMessage('SKIP_WAITING');
-    window.location.reload();
-  });
+  var banner = el('div', { style: 'position:fixed;bottom:20px;left:16px;right:16px;background:#1c1c1e;color:white;padding:14px 16px;border-radius:14px;z-index:9999;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid rgba(0,255,166,0.3);box-shadow:0 0 20px rgba(0,255,166,0.15);' });
+  banner.appendChild(el('span', null, ['Nueva version disponible']));
+  var btn = el('button', { style: 'background:#00ffa6;color:#000;border:none;border-radius:8px;padding:7px 14px;font-weight:700;cursor:pointer;font-size:13px;' }, ['Actualizar']);
+  btn.addEventListener('click', function() { worker.postMessage('SKIP_WAITING'); window.location.reload(); });
   banner.appendChild(btn);
   document.body.appendChild(banner);
 }
@@ -539,6 +485,6 @@ fetch('./rutina.json')
   })
   .catch(function(err) {
     console.error('Error cargando rutina.json:', err);
-    document.getElementById('app-content').innerHTML =
-      '<div style="padding:40px;text-align:center;color:var(--text-muted);">Error cargando rutinas. Verifica tu conexion.</div>';
+    var c = document.getElementById('app-content');
+    if (c) c.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text-muted);">Error cargando rutinas. Verifica tu conexion.</div>';
   });
