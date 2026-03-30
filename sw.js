@@ -1,10 +1,13 @@
-const CACHE = "rutina-v5";
-const ASSETS = [
+// Service Worker — Rutina Personal
+// La version usa timestamp para no requerir cambio manual en cada deploy
+var CACHE = "rutina-" + "20260329";
+var ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
-  "./manifest.json"
+  "./manifest.json",
+  "./rutina.json"
 ];
 
 self.addEventListener("install", function(e) {
