@@ -64,6 +64,7 @@
           "icon": "◑",
           "sections": [
             {
+              "id": "n",
               "type": "scenario_picker",
               "label": "Selecciona tu escenario de esta noche",
               "scenarios": [
