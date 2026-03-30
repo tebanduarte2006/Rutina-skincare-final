@@ -1,0 +1,397 @@
+{
+  "version": "1.0",
+  "app": {
+    "title": "Rutina Personal",
+    "subtitle": "Esteban · Bogotá · 2026"
+  },
+
+  "modules": [
+
+    {
+      "id": "skincare",
+      "label": "Skincare",
+      "icon": "✦",
+      "color": "#007AFF",
+      "tabs": [
+
+        {
+          "id": "manana",
+          "label": "Mañana",
+          "icon": "☀",
+          "sections": [
+            {
+              "type": "checklist",
+              "id": "m",
+              "label": "Rutina matutina — Diaria sin excepciones",
+              "steps": [
+                {
+                  "id": "m_01",
+                  "name": "Limpieza facial en ducha",
+                  "detail": "Piel húmeda. Masajea 30-60 seg con movimientos circulares suaves. Enjuaga con agua tibia, nunca caliente.",
+                  "product": "Eucerin Dermopure Oil Control · 400ml"
+                },
+                {
+                  "id": "m_02",
+                  "name": "Secar con toque suave",
+                  "detail": "Toquecitos con toalla. No frotar. Piel ligeramente húmeda para el siguiente paso."
+                },
+                {
+                  "id": "m_03",
+                  "name": "Hidratante",
+                  "detail": "Capa fina sobre toda la cara. Espera 2 min antes del protector.",
+                  "product": "Hydraskin · Pharmaderm"
+                },
+                {
+                  "id": "m_04",
+                  "name": "Protector solar — no negociable",
+                  "detail": "Último paso siempre. UV extremo en Bogotá (índice 10-13). Reaplicar si estás más de 2h en exterior directo.",
+                  "product": "Cetaphil Sun SPF 50+ · piel mixta-grasa"
+                }
+              ]
+            },
+            {
+              "type": "alert",
+              "variant": "info",
+              "label": "Comedones · Opcional",
+              "text": "Avene Comedomed puntual sobre lesiones, después del hidratante y antes del SPF. Máx 2-3 veces/semana. No en toda la cara."
+            }
+          ]
+        },
+
+        {
+          "id": "noche",
+          "label": "Noche",
+          "icon": "◑",
+          "sections": [
+            {
+              "type": "scenario_picker",
+              "label": "Selecciona tu escenario de esta noche",
+              "scenarios": [
+
+                {
+                  "id": "s1",
+                  "label": "Descanso",
+                  "sections": [
+                    {
+                      "type": "alert",
+                      "variant": "ok",
+                      "label": "✓ Noche de descanso",
+                      "text": "Solo limpieza e hidratación. La barrera cutánea se recupera."
+                    },
+                    {
+                      "type": "checklist",
+                      "id": "s1",
+                      "steps": [
+                        {
+                          "id": "s1_01",
+                          "name": "Ducha + limpieza facial",
+                          "detail": "Eucerin en ducha. Agua tibia. Enjuague completo.",
+                          "product": "Eucerin Dermopure Oil Control"
+                        },
+                        {
+                          "id": "s1_02",
+                          "name": "Secar con toque suave",
+                          "detail": "Toquecitos, sin fricción."
+                        },
+                        {
+                          "id": "s1_03",
+                          "name": "Hidratante",
+                          "detail": "Hydraskin en capa ligera. Fin.",
+                          "product": "Hydraskin · Pharmaderm"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "alert",
+                      "variant": "ok",
+                      "label": "Opcional",
+                      "text": "Pimple patches sobre lesiones activas como último paso. Pambu My Pimple Hero."
+                    }
+                  ]
+                },
+
+                {
+                  "id": "s2",
+                  "label": "Con tratamiento",
+                  "sections": [
+                    {
+                      "type": "alert",
+                      "variant": "warn",
+                      "label": "⚠ Transición activa",
+                      "text": "Zudenina suspendida. Consulta la pestaña Transición para saber qué activo aplica hoy."
+                    },
+                    {
+                      "type": "checklist",
+                      "id": "s2",
+                      "steps": [
+                        {
+                          "id": "s2_01",
+                          "name": "Ducha + limpieza facial",
+                          "detail": "Eucerin. Secar completamente antes del activo.",
+                          "product": "Eucerin Dermopure Oil Control"
+                        },
+                        {
+                          "id": "s2_02",
+                          "name": "Activo nocturno según fase",
+                          "detail": "Sem. 1-2: Nada. Solo limpieza + hidratante. Sem. 3+: Benzac AC con hisopo puntual sobre cada lesión individual."
+                        },
+                        {
+                          "id": "s2_03",
+                          "name": "Esperar 10 min",
+                          "detail": "Si usaste Benzac AC, dejar absorber antes del hidratante."
+                        },
+                        {
+                          "id": "s2_04",
+                          "name": "Hidratante generoso",
+                          "detail": "Capa más abundante cuando hay activos.",
+                          "product": "Hydraskin · Pharmaderm"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "alert",
+                      "variant": "danger",
+                      "label": "🚫 No combinar",
+                      "text": "Benzac AC + Avene Comedomed. Ni Benzac + ácido salicílico. Un activo por noche."
+                    }
+                  ]
+                },
+
+                {
+                  "id": "s3",
+                  "label": "Noche de afeitado",
+                  "sections": [
+                    {
+                      "type": "alert",
+                      "variant": "ok",
+                      "label": "✓ Noche de afeitado",
+                      "text": "Sin activos agresivos. Solo hidratante al final."
+                    },
+                    {
+                      "type": "checklist",
+                      "id": "s3",
+                      "steps": [
+                        {
+                          "id": "s3_01",
+                          "name": "Azelac Loción — 1-2h antes",
+                          "detail": "Aplicar sobre la zona a afeitar antes de salir al gym. Durante el entrenamiento (~1-2h) actúa en la piel. Se lava en la ducha post-gym y el efecto protector permanece.",
+                          "product": "Azelac Loción · Sesderma"
+                        },
+                        {
+                          "id": "s3_02",
+                          "name": "Ducha + limpieza facial",
+                          "detail": "El vapor ablanda el vello. Afeitar justo al salir.",
+                          "product": "Eucerin Dermopure Oil Control"
+                        },
+                        {
+                          "id": "s3_03",
+                          "name": "Gel + 30 seg de reposo",
+                          "detail": "Sin reposo el gel no lubrica y las cortadas aumentan.",
+                          "product": "Gillette Fusion ProGlide · gel"
+                        },
+                        {
+                          "id": "s3_04",
+                          "name": "Afeitado — una dirección",
+                          "detail": "A favor del crecimiento siempre. Safety razor: nivel 1-2. Presión mínima."
+                        },
+                        {
+                          "id": "s3_05",
+                          "name": "Enjuague con agua fría",
+                          "detail": "Cierra poros. Espera 2-3 min antes de aplicar algo."
+                        },
+                        {
+                          "id": "s3_06",
+                          "name": "Hidratante abundante",
+                          "detail": "Capa generosa. Sin activos adicionales esta noche.",
+                          "product": "Hydraskin · Pharmaderm"
+                        }
+                      ]
+                    }
+                  ]
+                }
+
+              ]
+            }
+          ]
+        },
+
+        {
+          "id": "afeitado",
+          "label": "Afeitado",
+          "icon": "✦",
+          "sections": [
+            {
+              "type": "metric_grid",
+              "label": "Safety Razor",
+              "items": [
+                {
+                  "label": "Nivel actual",
+                  "value": "6",
+                  "sublabel": "⚠ Demasiado agresivo",
+                  "variant": "warn"
+                },
+                {
+                  "label": "Nivel objetivo",
+                  "value": "1–2",
+                  "sublabel": "✓ Para tu piel",
+                  "variant": "ok"
+                },
+                {
+                  "label": "Frecuencia",
+                  "value": "2–3",
+                  "sublabel": "veces / semana",
+                  "variant": "default"
+                }
+              ]
+            },
+            {
+              "type": "alert",
+              "variant": "warn",
+              "label": "⚠ Por qué bajar el nivel",
+              "text": "Nivel 6 = máxima exposición de hoja = mayor riesgo de cortes y razor bumps. Empieza en nivel 1 y sube de uno en uno según tolerancia."
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "type": "day_selector",
+              "label": "Días de afeitado",
+              "sublabel": "Toca para marcar o desmarcar. Días alternos recomendados.",
+              "days": ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+              "default_selected": [0, 2, 4]
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "type": "rules",
+              "label": "Reglas de oro",
+              "items": [
+                {
+                  "id": "R1",
+                  "name": "Azelac antes de salir al gym",
+                  "detail": "No justo antes, no después."
+                },
+                {
+                  "id": "R2",
+                  "name": "Una sola dirección",
+                  "detail": "A favor del crecimiento. Sin excepción. Ya lo haces bien."
+                },
+                {
+                  "id": "R3",
+                  "name": "Gel + 30 seg de reposo",
+                  "detail": "Sin reposo, las cortadas se multiplican."
+                },
+                {
+                  "id": "R4",
+                  "name": "Sin activos la noche del afeitado",
+                  "detail": "Solo hidratante. Siempre."
+                },
+                {
+                  "id": "R5",
+                  "name": "Cortadas — bloque de alumbre (método óptimo)",
+                  "detail": "El bloque de alumbre actúa como hemostático y antiséptico: detiene el sangrado en 10-20 segundos y cierra el poro. Moja el bloque con agua fría y pásalo suavemente sobre la cortada 2-3 veces. Superior al papel higiénico porque no deja fibras, no requiere presión prolongada y previene infección. Disponible en farmacias (Osma, Razorock o equivalentes). Fallback: hielo + papel limpio + presión 60 seg sin frotar."
+                }
+              ]
+            }
+          ]
+        },
+
+        {
+          "id": "transicion",
+          "label": "Transición",
+          "icon": "↗",
+          "sections": [
+            {
+              "type": "alert",
+              "variant": "danger",
+              "label": "🚫 Zudenina Plus — Suspendida 13 Mar 2026",
+              "text": "Adapaleno 0.1g + Clindamicina 1.0g · Venta bajo fórmula médica. +1 año sin prescripción. Uso prolongado de clindamicina tópica genera resistencia de C. acnes (Eady et al., JAAD). Guías AAD/EDF: máximo 3 meses."
+            },
+            {
+              "type": "phase_tracker",
+              "title": "¿En qué fase estoy?",
+              "subtitle": "Toca la fase que corresponde a tu semana actual.",
+              "default": 0,
+              "phases": [
+                {
+                  "label": "1–2",
+                  "sublabel": "Recuperación",
+                  "title": "Semanas 1-2 — Recuperación de barrera",
+                  "description": "Solo Eucerin + Hydraskin cada noche. Sin activos agresivos. El adapaleno tiene efecto residual — agregar otro activo inmediatamente puede irritar. Si hay brotes urgentes: Benzac AC con hisopo puntual sobre la lesión individual solamente."
+                },
+                {
+                  "label": "3–4",
+                  "sublabel": "Benzac puntual",
+                  "title": "Semanas 3-4 — Reintroducción puntual de Benzac AC",
+                  "description": "Benzac AC solo sobre lesiones individuales con hisopo. No extender a toda la cara. Observa tolerancia 1 semana antes de continuar. Si hay irritación o descamación: retrocede una semana."
+                },
+                {
+                  "label": "5–8",
+                  "sublabel": "Benzac zonas",
+                  "title": "Semanas 5-8 — Benzac AC en zonas afectadas",
+                  "description": "Extiende Benzac AC a las zonas habitualmente afectadas (frente, nariz, mentón). Máximo 3 noches por semana. Las noches de afeitado: solo hidratante, sin excepción."
+                },
+                {
+                  "label": "8+",
+                  "sublabel": "Dermatólogo",
+                  "title": "Semana 8+ — Consulta dermatológica obligatoria",
+                  "description": "Evaluación profesional para determinar si hay resistencia a clindamicina y cuál es el protocolo definitivo. Este protocolo cumplió su función."
+                }
+              ]
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "type": "rules",
+              "label": "Reglas durante la transición",
+              "items": [
+                {
+                  "id": "T1",
+                  "name": "Benzac AC nunca en noche de afeitado",
+                  "detail": "Solo hidratante esa noche. Sin excepción."
+                },
+                {
+                  "id": "T2",
+                  "name": "No mezclar activos",
+                  "detail": "Benzac va solo. Sin Avene Comedomed ni ácido salicílico en la misma sesión."
+                },
+                {
+                  "id": "T3",
+                  "name": "Azelac pre-afeitado no cuenta",
+                  "detail": "Se aplica antes del gym, no después de la ducha. No interfiere con el protocolo nocturno posterior."
+                },
+                {
+                  "id": "T4",
+                  "name": "Dermatólogo antes de semana 8",
+                  "detail": "Evaluación obligatoria para protocolo definitivo."
+                }
+              ]
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "type": "permit_table",
+              "label": "Activos permitidos por fase",
+              "columns": ["Producto", "S 1-2", "S 3-4", "S 5-8"],
+              "rows": [
+                { "product": "Eucerin Dermopure",                    "values": ["ok",   "ok",   "ok"]   },
+                { "product": "Hydraskin",                            "values": ["ok",   "ok",   "ok"]   },
+                { "product": "Cetaphil Sun SPF 50+",                 "values": ["ok",   "ok",   "ok"]   },
+                { "product": "Azelac Loción (pre-afeitado)",         "values": ["ok",   "ok",   "ok"]   },
+                { "product": "Avene Comedomed (puntual · mañana)",   "values": ["ok",   "ok",   "ok"]   },
+                { "product": "Benzac AC — puntual (noche)",          "values": ["no",   "half", "ok"]   },
+                { "product": "Pimple patches",                       "values": ["ok",   "ok",   "ok"]   },
+                { "product": "Zudenina Plus — SUSPENDIDA",           "values": ["no",   "no",   "no"],  "highlight": "danger" }
+              ]
+            }
+          ]
+        }
+
+      ]
+    }
+
+  ]
+}
