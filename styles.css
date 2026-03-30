@@ -1,47 +1,46 @@
 /*
   styles.css — Rutina Personal · Esteban
-  Aesthetic: Apple Health — blanco, SF Pro, azul #007AFF
-  Todo el CSS vive aqui. El <style> embebido en index.html
-  sera eliminado en la siguiente fase de modularizacion.
+  Aesthetic: Apple Fitness — oscuro, rings animados, verde neon, microinteracciones
+  Version: 2.0
 */
 
 :root {
-  /* Colores base */
-  --bg:           #f2f2f7;
-  --surface:      #ffffff;
-  --surface2:     #f2f2f7;
-  --surface3:     #e5e5ea;
+  /* Fondos */
+  --bg:           #000000;
+  --surface:      #1c1c1e;
+  --surface2:     #2c2c2e;
+  --surface3:     #3a3a3c;
 
-  /* Azul Apple */
-  --blue:         #007aff;
-  --blue-light:   #e8f2ff;
-  --blue-pale:    #f0f7ff;
+  /* Colores Apple Fitness */
+  --green:        #00ffa6;
+  --green-dim:    rgba(0, 255, 166, 0.15);
+  --green-glow:   rgba(0, 255, 166, 0.5);
+  --blue:         #0a84ff;
+  --blue-dim:     rgba(10, 132, 255, 0.15);
+  --red:          #ff453a;
+  --red-dim:      rgba(255, 69, 58, 0.15);
+  --yellow:       #ffd60a;
+  --yellow-dim:   rgba(255, 214, 10, 0.15);
+  --purple:       #bf5af2;
+  --purple-dim:   rgba(191, 90, 242, 0.15);
 
   /* Texto */
-  --text:         #000000;
-  --text-sec:     #3c3c43;
-  --text-muted:   #8e8e93;
+  --text:         #ffffff;
+  --text-sec:     #ebebf5cc;
+  --text-muted:   #ebebf599;
 
   /* Separadores */
-  --sep:          rgba(60,60,67,0.12);
-  --sep-strong:   rgba(60,60,67,0.22);
-
-  /* Estado */
-  --green:        #34c759;
-  --green-bg:     #f0faf3;
-  --red:          #ff3b30;
-  --red-bg:       #fff5f5;
-  --yellow:       #ff9f0a;
-  --yellow-bg:    #fffbf0;
+  --sep:          rgba(255, 255, 255, 0.08);
+  --sep-strong:   rgba(255, 255, 255, 0.16);
 
   /* Forma */
   --radius:       16px;
   --radius-sm:    12px;
   --radius-xs:    8px;
 
-  /* Sombra */
-  --shadow:       0 1px 0 var(--sep);
-  --shadow-card:  0 2px 8px rgba(0,0,0,0.06);
+  /* Sombras */
+  --shadow:       0 2px 12px rgba(0, 0, 0, 0.4);
+  --shadow-glow:  0 0 16px var(--green-glow);
 }
 
 /* ─── Reset ────────────────────────────────────────────────────────────────── */
@@ -67,7 +66,7 @@ body {
 
 /* ─── Header ───────────────────────────────────────────────────────────────── */
 header {
-  background: rgba(255,255,255,0.85);
+  background: rgba(28, 28, 30, 0.85);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--sep);
@@ -105,19 +104,22 @@ header {
   font-weight: 600;
   padding: 6px 14px;
   border-radius: 40px;
-  background: var(--blue-light);
-  color: var(--blue);
-  border: none;
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(0, 255, 166, 0.3);
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.15s;
+  transition: background 0.15s, box-shadow 0.15s;
   flex-shrink: 0;
 }
-.phase-pill:active { background: #cce0ff; }
+.phase-pill:active {
+  background: rgba(0, 255, 166, 0.25);
+  box-shadow: var(--shadow-glow);
+}
 
 /* ─── Nav tabs ─────────────────────────────────────────────────────────────── */
 .nav-wrap {
-  background: rgba(255,255,255,0.85);
+  background: rgba(28, 28, 30, 0.85);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--sep);
@@ -149,10 +151,13 @@ header {
   outline: none;
   white-space: nowrap;
   transition: color 0.15s, border-color 0.15s;
-  letter-spacing: -0.1px;
 }
 .main-tab:hover  { color: var(--text-sec); }
-.main-tab.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
+.main-tab.active {
+  color: var(--green);
+  border-bottom-color: var(--green);
+  font-weight: 600;
+}
 
 /* ─── Content ──────────────────────────────────────────────────────────────── */
 .content {
@@ -207,16 +212,17 @@ header {
 
 .prog-bar {
   height: 100%;
-  background: var(--blue);
+  background: var(--green);
   border-radius: 4px;
-  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   width: 0%;
+  box-shadow: 0 0 8px var(--green-glow);
 }
 
 .prog-pct {
   font-size: 12px;
   font-weight: 600;
-  color: var(--blue);
+  color: var(--green);
   min-width: 32px;
   text-align: right;
 }
@@ -227,23 +233,27 @@ header {
 .reset-btn {
   font-size: 12px;
   font-weight: 500;
-  color: var(--blue);
+  color: var(--text-muted);
   background: none;
   border: none;
   padding: 4px 8px;
   cursor: pointer;
   border-radius: 6px;
-  transition: background 0.15s;
+  transition: color 0.15s, background 0.15s;
 }
-.reset-btn:active { background: var(--blue-light); }
+.reset-btn:active {
+  color: var(--green);
+  background: var(--green-dim);
+}
 
 /* ─── Steps ────────────────────────────────────────────────────────────────── */
 .steps {
   background: var(--surface);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow);
   margin-bottom: 16px;
+  border: 1px solid var(--sep);
 }
 
 .step {
@@ -260,9 +270,7 @@ header {
 .step:last-child { border-bottom: none; }
 .step:active     { background: var(--surface2); }
 
-.step.checked {
-  background: var(--surface);
-}
+.step.checked { background: var(--surface); }
 .step.checked .step-name {
   color: var(--text-muted);
   text-decoration: line-through;
@@ -276,7 +284,6 @@ header {
   min-width: 18px;
   padding-top: 3px;
   user-select: none;
-  letter-spacing: 0.2px;
 }
 
 .step-body { flex: 1; min-width: 0; }
@@ -302,39 +309,63 @@ header {
   font-weight: 500;
   padding: 2px 8px;
   border-radius: 6px;
-  background: var(--blue-light);
-  color: var(--blue);
+  background: var(--green-dim);
+  color: var(--green);
   margin-top: 6px;
+  border: 1px solid rgba(0, 255, 166, 0.2);
 }
 
-/* Checkbox */
+/* ─── Checkbox — ring estilo Apple Fitness ─────────────────────────────────── */
 .check-box {
-  width: 22px;
-  height: 22px;
-  border: 1.5px solid var(--sep-strong);
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   flex-shrink: 0;
-  margin-top: 1px;
+  margin-top: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s, border-color 0.15s;
-  background: var(--surface);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-.step.checked .check-box {
-  background: var(--green);
+/* Ring SVG como background */
+.check-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--surface3);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.step.checked .check-box::before {
   border-color: var(--green);
+  box-shadow: 0 0 8px var(--green-glow), inset 0 0 8px var(--green-dim);
 }
 
 .step.checked .check-box::after {
   content: "";
   width: 5px;
   height: 9px;
-  border: 2px solid white;
+  border: 2px solid var(--green);
   border-top: none;
   border-left: none;
   transform: rotate(45deg) translateY(-1px);
+  position: relative;
+  z-index: 1;
+}
+
+/* Animacion pop al completar */
+@keyframes pop {
+  0%   { transform: scale(1); }
+  60%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.step.checked .check-box {
+  animation: pop 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ─── Step static (rules) ──────────────────────────────────────────────────── */
@@ -342,8 +373,9 @@ header {
   background: var(--surface);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow);
   margin-bottom: 16px;
+  border: 1px solid var(--sep);
 }
 
 .step-static {
@@ -354,7 +386,7 @@ header {
   border-bottom: 1px solid var(--sep);
 }
 .step-static:last-child { border-bottom: none; }
-.step-static .step-num  { color: var(--blue); }
+.step-static .step-num  { color: var(--green); }
 
 /* ─── Alerts ───────────────────────────────────────────────────────────────── */
 .alert {
@@ -363,6 +395,7 @@ header {
   margin-bottom: 12px;
   font-size: 13px;
   line-height: 1.55;
+  border: 1px solid transparent;
 }
 
 .alert-label {
@@ -374,16 +407,35 @@ header {
   margin-bottom: 4px;
 }
 
-.alert-danger  { background: var(--red-bg);    color: #a00; }
-.alert-danger  .alert-label { color: var(--red); }
-.alert-warn    { background: var(--yellow-bg); color: #6b4000; }
-.alert-warn    .alert-label { color: var(--yellow); }
-.alert-ok      { background: var(--green-bg);  color: #0a4020; }
-.alert-ok      .alert-label { color: var(--green); }
-.alert-info    { background: var(--blue-pale); color: #003580; }
-.alert-info    .alert-label { color: var(--blue); }
+.alert-danger {
+  background: var(--red-dim);
+  border-color: rgba(255, 69, 58, 0.25);
+  color: #ff8f89;
+}
+.alert-danger .alert-label { color: var(--red); }
 
-/* ─── Sub-tabs (escenarios noche) ──────────────────────────────────────────── */
+.alert-warn {
+  background: var(--yellow-dim);
+  border-color: rgba(255, 214, 10, 0.25);
+  color: #ffe066;
+}
+.alert-warn .alert-label { color: var(--yellow); }
+
+.alert-ok {
+  background: var(--green-dim);
+  border-color: rgba(0, 255, 166, 0.25);
+  color: #7fffd4;
+}
+.alert-ok .alert-label { color: var(--green); }
+
+.alert-info {
+  background: var(--blue-dim);
+  border-color: rgba(10, 132, 255, 0.25);
+  color: #82b4ff;
+}
+.alert-info .alert-label { color: var(--blue); }
+
+/* ─── Sub-tabs ─────────────────────────────────────────────────────────────── */
 .sub-tabs {
   display: flex;
   gap: 8px;
@@ -397,17 +449,17 @@ header {
   padding: 7px 14px;
   border-radius: 40px;
   border: 1px solid var(--sep-strong);
-  color: var(--text-sec);
+  color: var(--text-muted);
   cursor: pointer;
   background: var(--surface);
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition: all 0.15s;
   outline: none;
 }
 .sub-tab:active { background: var(--surface2); }
 .sub-tab.active {
-  background: var(--blue);
-  border-color: var(--blue);
-  color: white;
+  background: var(--green-dim);
+  border-color: rgba(0, 255, 166, 0.4);
+  color: var(--green);
   font-weight: 600;
 }
 
@@ -417,7 +469,7 @@ header {
 /* ─── Divider ──────────────────────────────────────────────────────────────── */
 .divider { height: 1px; background: var(--sep); margin: 20px 0; }
 
-/* ─── Razor grid ───────────────────────────────────────────────────────────── */
+/* ─── Metric grid ──────────────────────────────────────────────────────────── */
 .razor-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -430,11 +482,18 @@ header {
   border-radius: var(--radius-sm);
   padding: 14px 10px;
   text-align: center;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--sep);
 }
 
-.razor-card.warn-card { background: var(--red-bg); }
-.razor-card.ok-card   { background: var(--green-bg); }
+.razor-card.warn-card {
+  background: var(--red-dim);
+  border-color: rgba(255, 69, 58, 0.25);
+}
+.razor-card.ok-card {
+  background: var(--green-dim);
+  border-color: rgba(0, 255, 166, 0.25);
+}
 
 .rc-label {
   font-size: 10px;
@@ -454,8 +513,11 @@ header {
 }
 
 .warn-card .rc-val { color: var(--red); }
-.ok-card   .rc-val { color: var(--green); }
-.rc-val-default    { color: var(--text); }
+.ok-card   .rc-val {
+  color: var(--green);
+  text-shadow: 0 0 12px var(--green-glow);
+}
+.rc-val-default { color: var(--text); }
 .rc-sub { font-size: 11px; color: var(--text-muted); }
 
 /* ─── Day selector ─────────────────────────────────────────────────────────── */
@@ -468,20 +530,21 @@ header {
   height: 42px;
   border-radius: 50%;
   border: 1.5px solid var(--sep-strong);
-  color: var(--text-sec);
+  color: var(--text-muted);
   background: var(--surface);
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition: all 0.15s;
   outline: none;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.day-btn:active  { background: var(--surface2); }
+.day-btn:active { background: var(--surface2); }
 .day-btn.selected {
-  background: var(--blue);
-  border-color: var(--blue);
-  color: white;
+  background: var(--green-dim);
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 0 8px var(--green-glow);
 }
 
 /* ─── Tracker ──────────────────────────────────────────────────────────────── */
@@ -490,7 +553,8 @@ header {
   border-radius: var(--radius);
   padding: 18px;
   margin-bottom: 16px;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--sep);
 }
 
 .tracker-title {
@@ -518,15 +582,15 @@ header {
   background: var(--surface2);
   border-radius: var(--radius-xs);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: all 0.15s;
   line-height: 1.4;
   border: 1.5px solid transparent;
 }
 .tracker-phase:active { background: var(--surface3); }
 .tracker-phase.current {
-  background: var(--blue-light);
-  color: var(--blue);
-  border-color: var(--blue);
+  background: var(--green-dim);
+  color: var(--green);
+  border-color: rgba(0, 255, 166, 0.4);
   font-weight: 700;
 }
 
@@ -543,8 +607,9 @@ header {
   color: var(--text-sec);
   line-height: 1.6;
   padding: 13px 15px;
-  background: var(--blue-pale);
+  background: var(--surface2);
   border-radius: var(--radius-xs);
+  border: 1px solid var(--sep);
 }
 
 /* ─── Tabla de activos ─────────────────────────────────────────────────────── */
@@ -555,10 +620,14 @@ header {
   background: var(--surface);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--sep);
 }
 
-.permit-table thead tr { background: var(--surface2); border-bottom: 1px solid var(--sep); }
+.permit-table thead tr {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--sep);
+}
 .permit-table th {
   text-align: left;
   padding: 10px 14px;
