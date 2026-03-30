@@ -1,6 +1,6 @@
 // Service Worker — Rutina Personal
 // La version usa timestamp para no requerir cambio manual en cada deploy
-var CACHE = "rutina-" + "20260329";
+var CACHE = "rutina-" + "20260330";
 var ASSETS = [
   "./",
   "./index.html",
